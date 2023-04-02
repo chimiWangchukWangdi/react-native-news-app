@@ -35,12 +35,14 @@ export default function CategoryScreen() {
       await fetch(URL)
         .then((res) => res.json())
         .then((data) => {
-          setNewsData((previous) => [...previous, ...data.results]);
-          setNextPage(data.nextPage);
+          setNewsData(data.results);
+          // setNextPage(data.nextPage);
+          console.log('handlePress - newsData1',newsData)
         });
     } catch (error) {
       console.log(error);
     }
+    console.log('handlePress - newsData2',newsData)
   };
 
   return (
@@ -74,7 +76,9 @@ export default function CategoryScreen() {
         </Button>
       </View>
       <FlatList
+        /* TODO: to render a limited number of items initially and then load more items as the user scrolls.
         onEndReached={() => handlePress()}
+        onEndReachedThreshold={0.5} */
         style={styles.flatList}
         data={newsData}
         renderItem={({ item }) => (

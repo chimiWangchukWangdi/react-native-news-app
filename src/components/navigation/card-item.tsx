@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { NewsData } from "../../screens/utils/type";
 import { Card, useTheme } from "react-native-paper";

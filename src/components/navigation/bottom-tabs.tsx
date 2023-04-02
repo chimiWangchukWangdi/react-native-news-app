@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../../screens/home-screen";
 import CategoryScreen from "../../screens/category-screen";
-import ProfileScreen from "../../screens/profile-screen";
+import SearchScreen from "../../screens/search-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faHome,
@@ -26,7 +26,7 @@ function BottomTabs() {
             iconName = faHome;
           } else if (route.name === "Category") {
             iconName = faSearch;
-          } else if (route.name === "Profile") {
+          } else if (route.name === "Search") {
             iconName = faPerson;
           }
 
@@ -47,8 +47,8 @@ function BottomTabs() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="Search"
+        component={SearchScreen}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

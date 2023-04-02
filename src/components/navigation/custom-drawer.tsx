@@ -20,8 +20,8 @@ function CustomDrawer(props: any) {
         )}
       />
       <DrawerItem
-        label="Profile"
-        onPress={() => navigation.navigate("Profile")}
+        label="Search"
+        onPress={() => navigation.navigate("Search")}
         icon={() => (
           <FontAwesomeIcon icon={faPerson} size={18} color="tomato" />
         )}
