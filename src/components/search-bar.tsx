@@ -3,9 +3,9 @@ import React from "react";
 import { TextInput } from "react-native-gesture-handler";
 
 interface searchProps {
-    searchText: string
-    setSearchText: (text:string) => void
-    onSubmit: ([]:any) => void
+  searchText: string;
+  setSearchText: (text: string) => void;
+  onSubmit: ([]: any) => void;
 }
 
 const SearchBar = (props: searchProps) => {

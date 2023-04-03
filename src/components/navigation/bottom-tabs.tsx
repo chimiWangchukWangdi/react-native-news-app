@@ -8,7 +8,6 @@ import {
   faHome,
   faPerson,
   faSearch,
-  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +31,7 @@ function BottomTabs() {
 
           return <FontAwesomeIcon icon={iconName} size={18} color={color} />;
         },
-        tabBarActiveTintColor: "tomato",
+        tabBarActiveTintColor: "#007AFF",
         tabBarInactiveTintColor: "gray",
       })}
     >

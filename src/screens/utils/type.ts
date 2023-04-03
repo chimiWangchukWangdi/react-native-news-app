@@ -1,15 +1,12 @@
 export type NewsData = {
-    title: string,
-    link: string,
-    keywords: string[],
-    creator: string,
-    video_url: string,
-    description: string,
-    content: string,
-    pubDate: string,
-    image_url: string,
-    source_id: string,
-    category: string[],
-    country: string,
-    language: string
-}
+  urlToImage: string | never;
+  title: string;
+  description: string;
+  author: string;
+  publishedAt: string;
+  source: {
+    id: string;
+    name: string;
+  };
+  url: string;
+};
