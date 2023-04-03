@@ -1,7 +1,7 @@
 import React from "react";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHome, faPerson, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faList, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function CustomDrawer(props: any) {
   const { navigation } = props;
@@ -15,15 +15,13 @@ function CustomDrawer(props: any) {
       <DrawerItem
         label="Category"
         onPress={() => navigation.navigate("Category")}
-        icon={() => (
-          <FontAwesomeIcon icon={faSearch} size={18} color="#007AFF" />
-        )}
+        icon={() => <FontAwesomeIcon icon={faList} size={18} color="#007AFF" />}
       />
       <DrawerItem
         label="Search"
         onPress={() => navigation.navigate("Search")}
         icon={() => (
-          <FontAwesomeIcon icon={faPerson} size={18} color="#007AFF" />
+          <FontAwesomeIcon icon={faSearch} size={18} color="#007AFF" />
         )}
       />
     </DrawerContentScrollView>

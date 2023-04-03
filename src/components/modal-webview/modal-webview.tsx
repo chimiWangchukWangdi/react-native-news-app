@@ -1,20 +1,8 @@
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { Modal, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import WebView from "react-native-webview";
-
-interface modalProps {
-  visible: boolean;
-  url: string;
-  handleBack: () => void;
-}
+import { modalProps } from "../../models/news.model";
+import { styles } from "./style";
 
 const ModelWebview = ({ visible, url, handleBack }: modalProps) => {
   return (
@@ -37,27 +25,3 @@ const ModelWebview = ({ visible, url, handleBack }: modalProps) => {
 };
 
 export default ModelWebview;
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: Platform.OS === "ios" ? 50 : 0,
-  },
-  header: {
-    height: 50,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingRight: 20,
-  },
-  closeButton: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#007AFF",
-  },
-  webView: {
-    flex: 1,
-    width: Dimensions.get("screen").width,
-  },
-});

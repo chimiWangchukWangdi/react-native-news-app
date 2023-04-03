@@ -10,3 +10,9 @@ export type NewsData = {
   };
   url: string;
 };
+
+export interface modalProps {
+  visible: boolean;
+  url: string;
+  handleBack: () => void;
+}

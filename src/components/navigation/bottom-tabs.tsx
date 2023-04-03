@@ -1,13 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../../screens/home-screen";
-import CategoryScreen from "../../screens/category-screen";
-import SearchScreen from "../../screens/search-screen";
+import HomeScreen from "../../screens/home-screen/home-screen";
+import CategoryScreen from "../../screens/category-screen/category-screen";
+import SearchScreen from "../../screens/search-screen/search-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faHome,
-  faPerson,
   faSearch,
+  faList
 } from "@fortawesome/free-solid-svg-icons";
 
 const Tab = createBottomTabNavigator();
@@ -24,9 +24,9 @@ function BottomTabs() {
           if (route.name === "Home") {
             iconName = faHome;
           } else if (route.name === "Category") {
-            iconName = faSearch;
+            iconName = faList;
           } else if (route.name === "Search") {
-            iconName = faPerson;
+            iconName = faSearch;
           }
 
           return <FontAwesomeIcon icon={iconName} size={18} color={color} />;

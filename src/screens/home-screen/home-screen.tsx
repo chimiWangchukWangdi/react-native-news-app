@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   FlatList,
   Text,
   View,
@@ -9,31 +8,28 @@ import {
 import { Center } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faMugSaucer } from "@fortawesome/free-solid-svg-icons";
-import { NewsData } from "./utils/type";
-import Article from "../components/articles";
-import axios from "axios";
-
-const API_KEY = "947cec9dbcf74747b963c311e02eecf0";
+import { NewsData } from "../../models/news.model";
+import Article from "../../components/articles";
+import { getNewsData } from "../../services/news.api";
+import { styles } from "./style";
 
 export default function CategoryScreen() {
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getNewsData = async () => {
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`
-        );
-        setNewsData(response.data.articles);
+        const data = await getNewsData("us");
+        setNewsData(data);
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
       }
     };
-    getNewsData();
+    fetchData();
   }, []);
 
   return (
@@ -68,18 +64,3 @@ export default function CategoryScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#007AFF",
-    marginVertical: 16,
-  },
-  flatList: {
-    height: "auto",
-  },
-  loading: {
-    marginVertical: 16,
-  },
-});

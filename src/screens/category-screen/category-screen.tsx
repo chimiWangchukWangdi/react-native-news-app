@@ -1,34 +1,18 @@
-import React, { useCallback, useState } from "react";
-import {
-  StyleSheet,
-  FlatList,
-  Text,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import React, { useState } from "react";
+import { FlatList, Text, View, ActivityIndicator } from "react-native";
 import { Center, ScrollView } from "native-base";
-import { Chip, Button } from "react-native-paper";
+import { Chip } from "react-native-paper";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faMugSaucer } from "@fortawesome/free-solid-svg-icons";
-import { NewsData } from "./utils/type";
-import Article from "../components/articles";
-import axios from "axios";
-
-const Categories = [
-  "business",
-  "entertainment",
-  "general",
-  "health",
-  "science",
-  "sports",
-  "technology",
-];
-const API_KEY = "947cec9dbcf74747b963c311e02eecf0";
+import { NewsData } from "../../models/news.model";
+import Article from "../../components/articles";
+import { styles } from "./style";
+import { getNewsData } from "../../services/news.api";
+import { Categories } from "../../utils/type";
 
 export default function CategoryScreen() {
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
   const [loading, setLoading] = useState(false);
-
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const handleSelect = async (value: string) => {
@@ -39,10 +23,8 @@ export default function CategoryScreen() {
     } else {
       setSelectedCategory(value);
       try {
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=us&category=${value}&apiKey=${API_KEY}`
-        );
-        setNewsData(response.data.articles);
+        const data = await getNewsData("us", value);
+        setNewsData(data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -107,37 +89,3 @@ export default function CategoryScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#007AFF",
-    marginVertical: 16,
-  },
-  filterScrollView: {
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 10,
-  },
-  chipItem: {
-    borderColor: "#A9A9A9",
-    borderRadius: 20,
-    borderWidth: 1,
-    marginRight: 10,
-    marginBottom: 10,
-  },
-  selectedChipItem: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
-  },
-  filtersContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginVertical: 10,
-  },
-  flatList: {
-    height: "auto",
-  },
-});

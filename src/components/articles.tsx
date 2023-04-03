@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Modal, View, Dimensions, StyleSheet, Platform } from "react-native";
 import {
   Box,
   Heading,
@@ -10,28 +9,14 @@ import {
   Divider,
 } from "native-base";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import WebView from "react-native-webview";
-import ModalWebview from "./modal-webview";
+import ModalWebview from "./modal-webview/modal-webview";
+import { NewsData } from "../models/news.model";
 
-export interface articleProps {
-  urlToImage: string | never;
-  title: string;
-  description: string;
-  author: string;
-  publishedAt: string;
-  source: {
-    id: string;
-    name: string;
-  };
-  url: string;
-}
-
-const Article = (props: articleProps) => {
+const Article = (props: NewsData) => {
   const [showWebView, setShowWebView] = useState(false);
 
   const handleReadMore = () => {
     setShowWebView(true);
-    console.log("url", props.url);
   };
 
   const handleBack = () => {

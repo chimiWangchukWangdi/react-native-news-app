@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { TextInput } from "react-native-gesture-handler";
+import { styles } from "./style";
 
 interface searchProps {
   searchText: string;
@@ -25,15 +26,3 @@ const SearchBar = (props: searchProps) => {
 };
 
 export default SearchBar;
-const styles = StyleSheet.create({
-  container: {
-    margin: 10,
-  },
-  input: {
-    backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 10,
-    color: "#000",
-    borderWidth: 1,
-  },
-});
