@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Center, Text } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faMugSaucer } from "@fortawesome/free-solid-svg-icons";
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { Center } from "native-base";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import SearchBar from "../../components/search-bar/search-bar";
 import Article from "../../components/articles";
 import { styles } from "./style";
@@ -25,7 +23,6 @@ export default function SearchScreen() {
     <View>
       <Center>
         <Text style={styles.title}>Search Screen</Text>
-        <FontAwesomeIcon icon={faMugSaucer} size={32} color="#007AFF" />
       </Center>
       <SearchBar
         searchText={searchText}

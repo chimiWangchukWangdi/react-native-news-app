@@ -37,7 +37,6 @@ export default function CategoryScreen() {
     <View>
       <Center>
         <Text style={styles.title}>Category</Text>
-        <FontAwesomeIcon icon={faMugSaucer} size={32} color="#007AFF" />
       </Center>
       <View style={styles.filtersContainer}>
         <ScrollView

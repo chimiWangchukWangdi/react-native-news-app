@@ -6,15 +6,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Center } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faMugSaucer } from "@fortawesome/free-solid-svg-icons";
 import { NewsData } from "../../models/news.model";
 import Article from "../../components/articles";
 import { getNewsData } from "../../services/news.api";
 import { styles } from "./style";
 
 export default function CategoryScreen() {
-  const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
+  const [newsData, setNewsData] = useState<NewsData[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -36,7 +34,6 @@ export default function CategoryScreen() {
     <View>
       <Center>
         <Text style={styles.title}>Top Headlines</Text>
-        <FontAwesomeIcon icon={faMugSaucer} size={32} color="#007AFF" />
       </Center>
       {loading ? (
         <ActivityIndicator
