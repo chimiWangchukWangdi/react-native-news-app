@@ -1,33 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   Text,
   View,
-  ActivityIndicator,
 } from "react-native";
 import { Center } from "native-base";
-import { NewsData } from "../../models/news.model";
 import Article from "../../components/articles";
-import { getNewsData } from "../../services/news.api";
 import { styles } from "./style";
+import { useAppDispatch } from "../../state/store";
+import { fetchAsyncNews, getAllNews } from "../../state/newsSlice/newsSlice";
+import { useSelector } from "react-redux";
+import { NewsData } from "../../models/news.model";
 
 export default function CategoryScreen() {
-  const [newsData, setNewsData] = useState<NewsData[]>([]);
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const data = useSelector(getAllNews);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const data = await getNewsData("us");
-        setNewsData(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    dispatch(fetchAsyncNews(""));
   }, []);
 
   return (
@@ -35,17 +26,10 @@ export default function CategoryScreen() {
       <Center>
         <Text style={styles.title}>Top Headlines</Text>
       </Center>
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color="#007AFF"
-          style={styles.loading}
-        />
-      ) : (
         <FlatList
           style={styles.flatList}
-          data={newsData}
-          renderItem={({ item }) => (
+          data={data}
+          renderItem={({ item }: {item: NewsData}) => (
             <Article
               title={item.title}
               author={item.author}
@@ -57,7 +41,6 @@ export default function CategoryScreen() {
             />
           )}
         />
-      )}
     </View>
   );
 }

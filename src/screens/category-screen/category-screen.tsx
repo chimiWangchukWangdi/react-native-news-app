@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { FlatList, Text, View, ActivityIndicator } from "react-native";
 import { Center, ScrollView } from "native-base";
 import { Chip } from "react-native-paper";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faMugSaucer } from "@fortawesome/free-solid-svg-icons";
 import { NewsData } from "../../models/news.model";
 import Article from "../../components/articles";
 import { styles } from "./style";
-import { getNewsData } from "../../services/news.api";
 import { Categories } from "../../utils/type";
+import { useAppDispatch } from "../../state/store";
+import { useSelector } from "react-redux";
+import { fetchAsyncNews, getAllNews } from "../../state/newsSlice/newsSlice";
 
 export default function CategoryScreen() {
+  const dispatch = useAppDispatch();
+  const data = useSelector(getAllNews);
+
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -18,12 +21,13 @@ export default function CategoryScreen() {
   const handleSelect = async (value: string) => {
     setLoading(true);
     if (selectedCategory === value) {
+      setLoading(false);
       setSelectedCategory("");
       setNewsData([]);
     } else {
       setSelectedCategory(value);
       try {
-        const data = await getNewsData("us", value);
+        await dispatch(fetchAsyncNews(value)).unwrap();
         setNewsData(data);
       } catch (error) {
         console.log(error);
@@ -72,7 +76,7 @@ export default function CategoryScreen() {
         <FlatList
           style={styles.flatList}
           data={newsData}
-          renderItem={({ item }) => (
+          renderItem={({ item }: { item: NewsData }) => (
             <Article
               title={item.title}
               author={item.author}
