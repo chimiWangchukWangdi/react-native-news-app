@@ -29,7 +29,7 @@ export default function CategoryScreen() {
         <FlatList
           style={styles.flatList}
           data={data}
-          renderItem={({ item }: {item: NewsData}) => (
+          renderItem={({item}: {item:NewsData}) => (
             <Article
               title={item.title}
               author={item.author}

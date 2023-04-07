@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, View, ActivityIndicator } from "react-native";
 import { Center, ScrollView } from "native-base";
 import { Chip } from "react-native-paper";
@@ -8,20 +8,21 @@ import { styles } from "./style";
 import { Categories } from "../../utils/type";
 import { useAppDispatch } from "../../state/store";
 import { useSelector } from "react-redux";
-import { fetchAsyncNews, getAllNews } from "../../state/newsSlice/newsSlice";
+import { fetchAsyncNews, getAllNews, getLoadingState } from "../../state/newsSlice/newsSlice";
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
   const data = useSelector(getAllNews);
+  const isLoading = useSelector(getLoadingState)
 
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const handleSelect = async (value: string) => {
-    setLoading(true);
+    // setLoading(true);
     if (selectedCategory === value) {
-      setLoading(false);
+      // setLoading(false);
       setSelectedCategory("");
       setNewsData([]);
     } else {
@@ -32,7 +33,7 @@ export default function CategoryScreen() {
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     }
   };
@@ -70,7 +71,7 @@ export default function CategoryScreen() {
           ))}
         </ScrollView>
       </View>
-      {loading ? (
+      {isLoading ? (
         <ActivityIndicator size="large" color="blue" />
       ) : (
         <FlatList

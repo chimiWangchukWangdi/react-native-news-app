@@ -8,6 +8,7 @@ import axios from "axios";
 
 const initialState = {
   newsArray: [],
+  loading: false,
 };
 
 export const fetchAsyncNews = createAsyncThunk(
@@ -33,9 +34,18 @@ export const newsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAsyncNews.fulfilled, (state, action) => {
-      state.newsArray = action.payload;
-    });
+    builder
+      .addCase(fetchAsyncNews.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchAsyncNews.fulfilled, (state, action) => {
+        state.newsArray = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchAsyncNews.rejected, (state, action) => {
+        state.loading = false;
+        console.log("fetchAsyncNews rejected");
+      });
   },
 });
 
@@ -43,6 +53,12 @@ export const selectNewsState = (state: RootState) => state.news;
 export const getAllNews = createSelector(
   selectNewsState,
   (state) => state.newsArray
+);
+
+export const selectLoadingState = (state: RootState) => state.news;
+export const getLoadingState = createSelector(
+  selectLoadingState,
+  (state) => state.loading
 );
 
 export default newsSlice.reducer;
