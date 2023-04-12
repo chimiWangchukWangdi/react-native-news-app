@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Center } from "native-base";
-import { View, FlatList, ActivityIndicator, Text } from "react-native";
+import {
+  View,
+  FlatList,
+  ActivityIndicator,
+  Text,
+  RefreshControl,
+} from "react-native";
 import SearchBar from "../../components/search-bar/search-bar";
 import Article from "../../components/articles";
 import { styles } from "./style";
@@ -11,6 +17,16 @@ export default function SearchScreen() {
   const [searchText, setSearchText] = useState("");
   const [articles, setArticles] = useState<NewsData[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    setArticles([])
+    const articles = await searchArticles(searchText);
+    setArticles(articles);
+    setRefreshing(false);
+  };
 
   const handleSearch = async () => {
     setLoading(true);
@@ -42,6 +58,9 @@ export default function SearchScreen() {
           ) : (
             <View>
               <FlatList
+                refreshControl={
+                  <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                }
                 data={articles}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (

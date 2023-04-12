@@ -4,11 +4,7 @@ import HomeScreen from "../../screens/home-screen/home-screen";
 import CategoryScreen from "../../screens/category-screen/category-screen";
 import SearchScreen from "../../screens/search-screen/search-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faHome,
-  faSearch,
-  faList
-} from "@fortawesome/free-solid-svg-icons";
+import { faHome, faSearch, faList, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +15,7 @@ function BottomTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
-          let iconName: any;
+          let iconName!: IconDefinition;
 
           if (route.name === "Home") {
             iconName = faHome;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Text, View, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
+import { FlatList, Text, View, ActivityIndicator, RefreshControl } from "react-native";
 import { Center, ScrollView } from "native-base";
 import { Chip } from "react-native-paper";
 import { NewsData } from "../../models/news.model";
@@ -8,7 +8,7 @@ import { styles } from "./style";
 import { Categories } from "../../utils/type";
 import { useAppDispatch } from "../../state/store";
 import { useSelector } from "react-redux";
-import { fetchAsyncNews, getAllNews, getLoadingState } from "../../state/newsSlice/newsSlice";
+import { clearAllNews, fetchAsyncNews, getAllNews, getLoadingState } from "../../state/newsSlice/newsSlice";
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
@@ -19,10 +19,23 @@ export default function CategoryScreen() {
   // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(clearAllNews());
+    dispatch(fetchAsyncNews(selectedCategory));
+    // .then(() => setRefreshing(false))
+    // .catch((error) => {
+    //   console.error(error);
+    //   setRefreshing(false);
+    // });
+    setRefreshing(false);
+  };
+
   const handleSelect = async (value: string) => {
-    // setLoading(true);
+    
     if (selectedCategory === value) {
-      // setLoading(false);
       setSelectedCategory("");
       setNewsData([]);
     } else {
@@ -31,9 +44,7 @@ export default function CategoryScreen() {
         await dispatch(fetchAsyncNews(value)).unwrap();
         setNewsData(data);
       } catch (error) {
-        console.log(error);
-      } finally {
-        // setLoading(false);
+        console.log('this is setSelectedCategory', error);
       }
     }
   };
@@ -75,6 +86,9 @@ export default function CategoryScreen() {
         <ActivityIndicator size="large" color="blue" />
       ) : (
         <FlatList
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+          }
           style={styles.flatList}
           data={newsData}
           renderItem={({ item }: { item: NewsData }) => (

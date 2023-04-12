@@ -1,9 +1,10 @@
 import React from "react";
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHome, faList, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { View, Text } from "react-native";
 
-function CustomDrawer(props: any) {
+function CustomDrawer(props: DrawerContentComponentProps) {
   const { navigation } = props;
   return (
     <DrawerContentScrollView {...props}>

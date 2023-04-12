@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { NativeSyntheticEvent, TextInputSubmitEditingEventData, View } from "react-native";
 import React from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { styles } from "./style";
@@ -6,7 +6,7 @@ import { styles } from "./style";
 interface searchProps {
   searchText: string;
   setSearchText: (text: string) => void;
-  onSubmit: ([]: any) => void;
+  onSubmit: (event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
 }
 
 const SearchBar = (props: searchProps) => {

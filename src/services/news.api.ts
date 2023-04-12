@@ -31,14 +31,14 @@ export const getCategoryNewsData = async (
 
 export const getNewsData = async (country: string, category?: string) => {
   try {
-    let apiUrl = `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=947cec9dbcf74747b963c311e02eecf0`;
+    let apiUrl = `https://newsapi.org/v2/top-headlines?country=bt&apiKey=947cec9dbcf74747b963c311e02eecf0`;
     if (category) {
       apiUrl += `&category=${category}`;
     }
     const response = await axios.get(apiUrl);
     return response.data.articles;
   } catch (error) {
-    console.log(error);
+    console.log('this is getNewsData', error);
     return null;
   }
 };
@@ -49,17 +49,11 @@ export const searchArticles = async (
   try {
     const response = await axios.get(
       Config.BASE_API_URL ??
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=947cec9dbcf74747b963c311e02eecf0",
-      {
-        params: {
-          category: "",
-          q: searchText,
-        },
-      }
+        `https://newsapi.org/v2/everything?q=${searchText}&pageSize=10&apiKey=947cec9dbcf74747b963c311e02eecf0`
     );
     return response.data.articles;
   } catch (error) {
-    console.log(error);
+    console.log('this is searchArticles', error);
     return [];
   }
 };
