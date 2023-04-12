@@ -83,7 +83,7 @@ export default function CategoryScreen() {
         </ScrollView>
       </View>
       {isLoading ? (
-        <ActivityIndicator size="large" color="blue" />
+        <ActivityIndicator size="large" color="#1877f2" />
       ) : (
         <FlatList
           refreshControl={

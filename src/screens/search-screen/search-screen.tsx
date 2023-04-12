@@ -47,7 +47,7 @@ export default function SearchScreen() {
       />
       {loading ? (
         <View>
-          <ActivityIndicator size="large" color="blue" />
+          <ActivityIndicator size="large" color="#1877f2" />
         </View>
       ) : (
         <View>

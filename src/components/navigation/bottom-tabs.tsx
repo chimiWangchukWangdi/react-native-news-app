@@ -30,6 +30,10 @@ function BottomTabs() {
         tabBarActiveTintColor: "#007AFF",
         tabBarInactiveTintColor: "gray",
       })}
+      sceneContainerStyle={{
+        flex: 1,
+        paddingBottom: 100
+      }}
     >
       <Tab.Screen
         name="Home"

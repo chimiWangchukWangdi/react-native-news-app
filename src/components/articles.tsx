@@ -24,7 +24,7 @@ const Article = (props: NewsData) => {
   };
 
   return (
-    <Box>
+    <Box marginX="12px">
       <HStack justifyContent="space-between" space="20px" pb="10px">
         <VStack width="60%">
           <Heading size="sm" numberOfLines={2}>
@@ -37,25 +37,10 @@ const Article = (props: NewsData) => {
             Source {props.source.name}
           </Text>
           <TouchableOpacity
-            style={{
-              alignSelf: "flex-end",
-              backgroundColor: "#1877f2",
-              paddingHorizontal: 12,
-              paddingVertical: 8,
-              borderRadius: 20,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
             onPress={() => handleReadMore()}
           >
-            <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
-              Read More
+            <Text style={{ color: "#1877f2", fontWeight: "bold" }}>
+              Read More...
             </Text>
           </TouchableOpacity>
           <ModalWebview

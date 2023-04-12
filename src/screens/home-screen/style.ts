@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     marginVertical: 16,
   },
   flatList: {
-    height: "auto",
   },
   loading: {
     marginVertical: 16,

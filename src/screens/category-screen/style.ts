@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectedChipItem: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1877f2",
     borderColor: "#007AFF",
   },
   filtersContainer: {

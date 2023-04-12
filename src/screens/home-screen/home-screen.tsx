@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, FlatList, RefreshControl, Text, View } from "react-native";
-import { Center } from "native-base";
+import { Button, RefreshControl, Text, View } from "react-native";
+import { Center, FlatList } from "native-base";
 import Article from "../../components/articles";
 import { styles } from "./style";
 import { useAppDispatch } from "../../state/store";
@@ -88,7 +88,7 @@ export default function HomeScreen() {
       <Center>
         <Text style={styles.title}>Top Headlines</Text>
       </Center>
-      {notification && typeof notification !== "boolean" ? (
+      {(notification && typeof notification !== "boolean") ? (
         <ModelWebview
           visible={showWebView}
           url={notification.request.content.data.url}
@@ -104,6 +104,8 @@ export default function HomeScreen() {
         }}
       />
       <FlatList
+        marginY="18px"
+        bounces={false}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }
