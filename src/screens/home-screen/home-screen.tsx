@@ -88,15 +88,14 @@ export default function HomeScreen() {
       <Center>
         <Text style={styles.title}>Top Headlines</Text>
       </Center>
-      {(notification && typeof notification !== "boolean") ? (
+      {notification && typeof notification !== "boolean" && (
         <ModelWebview
           visible={showWebView}
           url={notification.request.content.data.url}
           handleBack={handleBack}
         />
-      ) : (
-        <View></View>
       )}
+      {/* to trigger the push notificatoin for demo purpose */}
       <Button
         title="Press to Send Notification"
         onPress={async () => {
@@ -105,7 +104,6 @@ export default function HomeScreen() {
       />
       <FlatList
         marginY="18px"
-        bounces={false}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }
