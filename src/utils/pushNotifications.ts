@@ -1,19 +1,6 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 
-async function getLatestNewsArticle() {
-  const response = await fetch(
-    `https://newsdata.io/api/1/news?apikey=pub_19867a574651480e8031dc6e2452fbc96e295&q=disaster&country=in&language=en&category=business,environment,health,politics,world`
-  );
-  if (!response.ok) {
-    const json = await response.json();
-    return console.log("this is getLatestNewsAsrticle()", json.results.message);
-  }
-  const json = await response.json();
-  console.log("this is the json data", json.results[0]);
-  return json.results[0];
-}
-
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
