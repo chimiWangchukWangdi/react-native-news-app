@@ -19,7 +19,6 @@ const initialState = {
 export const fetchAsyncNews = createAsyncThunk(
   "news/fetchAsyncNews",
   async (category: string) => {
-    console.log("this is constants", Constants.manifest?.extra?.BASE_API_URL);
     try {
       const country = "us";
       let apiUrl = `${baseApiUrl}&apiKey=${apiKeyNewsApi}`;

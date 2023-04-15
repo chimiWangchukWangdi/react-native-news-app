@@ -24,7 +24,7 @@ const ModelWebview = ({ visible, url, handleBack }: modalProps) => {
         </View>
         {isLoading ? (
           <View>
-            <ActivityIndicator size="large" color="#1877f2" />
+            <ActivityIndicator size="large" color="#3182CE" />
           </View>
         ) : null}
         <WebView

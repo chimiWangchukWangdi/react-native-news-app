@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, RefreshControl, Text, View } from "react-native";
-import { Center, FlatList } from "native-base";
+import { RefreshControl,  } from "react-native";
+import { Center, FlatList, Heading, View } from "native-base";
 import Article from "../../components/articles";
-import { styles } from "./style";
 import { useAppDispatch } from "../../state/store";
 import {
   clearAllNews,
@@ -58,13 +57,10 @@ export default function HomeScreen() {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
-        console.log("this is notification", notification);
       });
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("this is resposeListener", response);
-        console.log("this is notification", notification);
         setShowWebView(true);
       });
 
@@ -86,7 +82,15 @@ export default function HomeScreen() {
   return (
     <View>
       <Center>
-        <Text style={styles.title}>Top Headlines</Text>
+        <Heading
+          fontSize="24px"
+          fontWeight="bold"
+          color="primary.500"
+          marginBottom="10px"
+          marginTop="10px"
+        >
+          Top Headlines
+        </Heading>
       </Center>
       {notification && typeof notification !== "boolean" && (
         <ModelWebview
@@ -96,18 +100,16 @@ export default function HomeScreen() {
         />
       )}
       {/* to trigger the push notificatoin for demo purpose */}
-      <Button
+      {/* <Button
         title="Press to Send Notification"
         onPress={async () => {
           await sendPushNotification(expoPushToken);
         }}
-      />
+      /> */}
       <FlatList
-        marginY="18px"
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }
-        style={styles.flatList}
         data={data}
         renderItem={({ item }: { item: NewsData }) => (
           <Article

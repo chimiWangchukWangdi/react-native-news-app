@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import BottomTabs from "./bottom-tabs";
 import CustomDrawer from "./custom-drawer";
+import RssFeedReader from "../../screens/rss-feed-reader";
 
 const Drawer = createDrawerNavigator();
 
@@ -11,6 +12,7 @@ function Navigation() {
     <NavigationContainer>
       <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} />}>
         <Drawer.Screen name="News App" component={BottomTabs} />
+        <Drawer.Screen name="Rss Feed" component={RssFeedReader} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

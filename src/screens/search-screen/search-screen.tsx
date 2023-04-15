@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import { Center } from "native-base";
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  RefreshControl,
-} from "react-native";
+import { Center, View, FlatList, Text, Heading, Image } from "native-base";
+import { ActivityIndicator, RefreshControl } from "react-native";
 import SearchBar from "../../components/search-bar/search-bar";
 import Article from "../../components/articles";
-import { styles } from "./style";
+// import { styles } from "./style";
 import { NewsData } from "../../models/news.model";
 import { searchArticles } from "../../services/news.api";
 
 export default function SearchScreen() {
+  // const imgNoData = require('../../../assets/no-data.png');
+
   const [searchText, setSearchText] = useState("");
   const [articles, setArticles] = useState<NewsData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,7 +18,7 @@ export default function SearchScreen() {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    setArticles([])
+    setArticles([]);
     const articles = await searchArticles(searchText);
     setArticles(articles);
     setRefreshing(false);
@@ -38,7 +34,15 @@ export default function SearchScreen() {
   return (
     <View>
       <Center>
-        <Text style={styles.title}>Search Screen</Text>
+        <Heading
+          fontSize="24px"
+          fontWeight="bold"
+          color="primary.500"
+          marginBottom="10px"
+          marginTop="10px"
+        >
+          Search Screen
+        </Heading>
       </Center>
       <SearchBar
         searchText={searchText}
@@ -47,19 +51,22 @@ export default function SearchScreen() {
       />
       {loading ? (
         <View>
-          <ActivityIndicator size="large" color="#1877f2" />
+          <ActivityIndicator size="large" color="#3182CE" />
         </View>
       ) : (
         <View>
-          {searchText !== "" && articles.length === 0 ? (
-            <View style={styles.noDataContainer}>
-              <Text style={styles.noDataText}>No matching data</Text>
+          {articles.length === 0 ? (
+            <View justifyContent="center" alignItems="center">
+              <Image size={300} borderRadius={10} source={require('../../../assets/no-data.png')} alt="no matching data" />
             </View>
           ) : (
             <View>
               <FlatList
                 refreshControl={
-                  <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                  <RefreshControl
+                    onRefresh={onRefresh}
+                    refreshing={refreshing}
+                  />
                 }
                 data={articles}
                 keyExtractor={(item, index) => index.toString()}

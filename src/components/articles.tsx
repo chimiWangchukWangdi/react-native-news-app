@@ -8,6 +8,7 @@ import {
   VStack,
   Divider,
 } from "native-base";
+import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ModalWebview from "./modal-webview/modal-webview";
 import { NewsData } from "../models/news.model";
@@ -24,44 +25,61 @@ const Article = (props: NewsData) => {
   };
 
   return (
-    <Box marginX="12px">
-      <HStack justifyContent="space-between" space="20px" pb="10px">
-        <VStack width="60%">
-          <Heading size="sm" numberOfLines={2}>
+    <Box p={3}>
+      <HStack justifyContent="space-between">
+        <VStack width="65%">
+          <Heading fontSize="md" fontWeight="medium" numberOfLines={2} mb={2}>
             {props.title}
           </Heading>
-          <Text fontSize="14px" color="black:alpha.60">
-            By {props.author}
-          </Text>
-          <Text fontSize="14px" color="black:alpha.60">
-            Source {props.source.name}
-          </Text>
+          <HStack mb={1}>
+            <Ionicons name="person-outline" size={16} color="#4299E1" mr={2} />
+            <Text fontSize="xs" color="gray.700">
+              {props.author}
+            </Text>
+          </HStack>
+          <HStack mb={2}>
+            <Ionicons
+              name="newspaper-outline"
+              size={16}
+              color="#4299E1"
+              mr={2}
+            />
+            <Text fontSize="xs" color="gray.700">
+              {props.source.name}
+            </Text>
+          </HStack>
           <TouchableOpacity
             onPress={() => handleReadMore()}
+            activeOpacity={0.8}
           >
-            <Text style={{ color: "#1877f2", fontWeight: "bold" }}>
-              Read More...
-            </Text>
+            <HStack>
+              <Ionicons
+                name="arrow-forward-outline"
+                size={20}
+                color="#3182CE"
+                mr={1}
+              />
+              <Text fontSize="sm" fontWeight="medium" color="#3182CE">
+                Read More
+              </Text>
+            </HStack>
           </TouchableOpacity>
-          <ModalWebview
-            visible={showWebView}
-            url={props.url}
-            handleBack={handleBack}
-          />
         </VStack>
-
         <Image
-          width="100px"
-          borderRadius="10px"
-          height="90px"
+          width="30%"
+          borderRadius={10}
+          height={120}
           resizeMode="cover"
-          source={{
-            uri: props.urlToImage,
-          }}
-          alt="image"
+          source={{ uri: props.urlToImage }}
+          alt="article image"
         />
       </HStack>
-      <Divider mb="16px" />
+      <Divider mt={4} />
+      <ModalWebview
+        visible={showWebView}
+        url={props.url}
+        handleBack={handleBack}
+      />
     </Box>
   );
 };

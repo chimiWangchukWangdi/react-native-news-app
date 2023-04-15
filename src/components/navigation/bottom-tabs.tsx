@@ -4,7 +4,8 @@ import HomeScreen from "../../screens/home-screen/home-screen";
 import CategoryScreen from "../../screens/category-screen/category-screen";
 import SearchScreen from "../../screens/search-screen/search-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHome, faSearch, faList, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faSearch, faList, IconDefinition, faRss } from "@fortawesome/free-solid-svg-icons";
+import RssFeedReader from "../../screens/rss-feed-reader";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,17 +24,19 @@ function BottomTabs() {
             iconName = faList;
           } else if (route.name === "Search") {
             iconName = faSearch;
+          } else if (route.name === "RssFeed") {
+            iconName = faRss;
           }
 
           return <FontAwesomeIcon icon={iconName} size={18} color={color} />;
         },
-        tabBarActiveTintColor: "#007AFF",
+        tabBarActiveTintColor: "#3182CE",
         tabBarInactiveTintColor: "gray",
       })}
-      sceneContainerStyle={{
-        flex: 1,
-        paddingBottom: 100
-      }}
+      // sceneContainerStyle={{
+      //   flex: 1,
+      //   paddingBottom: 20
+      // }}
     >
       <Tab.Screen
         name="Home"
@@ -50,6 +53,11 @@ function BottomTabs() {
         component={SearchScreen}
         options={{ headerShown: false }}
       />
+      {/* <Tab.Screen
+        name="RssFeed"
+        component={RssFeedReader}
+        options={{ headerShown: false }}
+      /> */}
     </Tab.Navigator>
   );
 }

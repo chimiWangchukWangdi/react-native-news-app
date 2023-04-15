@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   closeButton: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#007AFF",
+    color: "#3182CE",
   },
   webView: {
     flex: 1,
