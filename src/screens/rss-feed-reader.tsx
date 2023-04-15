@@ -28,7 +28,6 @@ const RssFeedReader = () => {
           <View>
             <Text>{item.title}</Text>
             <Text>{item.description}</Text>
-            <Text>{item.links}</Text>
             <Text />
           </View>
         )}
