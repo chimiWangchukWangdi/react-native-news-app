@@ -10,7 +10,7 @@ import {
 } from "../../state/newsSlice/newsSlice";
 import { useSelector } from "react-redux";
 import { NewsData } from "../../models/news.model";
-import ModelWebview from "../../components/modal-webview/modal-webview";
+import ModalWebview from "../../components/modal-webview/modal-webview";
 import {
   registerForPushNotificationsAsync,
   sendPushNotification,
@@ -93,7 +93,7 @@ export default function HomeScreen() {
         </Heading>
       </Center>
       {notification && typeof notification !== "boolean" && (
-        <ModelWebview
+        <ModalWebview
           visible={showWebView}
           url={notification.request.content.data.url}
           handleBack={handleBack}

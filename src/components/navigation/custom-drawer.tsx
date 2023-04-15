@@ -26,7 +26,7 @@ function CustomDrawer(props: DrawerContentComponentProps) {
       />
       <DrawerItem
         label="Rss Feed"
-        onPress={() => navigation.navigate("RssFeed")}
+        onPress={() => navigation.navigate("Rss Feed")}
         icon={() => (
           <FontAwesomeIcon icon={faRss} size={18} color="#3182CE" />
         )}

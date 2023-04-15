@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Center, View, FlatList, Text, Heading, Image } from "native-base";
 import { ActivityIndicator, RefreshControl } from "react-native";
-import SearchBar from "../../components/search-bar/search-bar";
+import InputBar from "../../components/search-bar/input-bar";
 import Article from "../../components/articles";
 // import { styles } from "./style";
 import { NewsData } from "../../models/news.model";
@@ -10,7 +10,7 @@ import { searchArticles } from "../../services/news.api";
 export default function SearchScreen() {
   // const imgNoData = require('../../../assets/no-data.png');
 
-  const [searchText, setSearchText] = useState("");
+  const [inputText, setInputText] = useState("");
   const [articles, setArticles] = useState<NewsData[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,14 +19,14 @@ export default function SearchScreen() {
   const onRefresh = async () => {
     setRefreshing(true);
     setArticles([]);
-    const articles = await searchArticles(searchText);
+    const articles = await searchArticles(inputText);
     setArticles(articles);
     setRefreshing(false);
   };
 
   const handleSearch = async () => {
     setLoading(true);
-    const articles = await searchArticles(searchText);
+    const articles = await searchArticles(inputText);
     setArticles(articles);
     setLoading(false);
   };
@@ -44,9 +44,9 @@ export default function SearchScreen() {
           Search Screen
         </Heading>
       </Center>
-      <SearchBar
-        searchText={searchText}
-        setSearchText={setSearchText}
+      <InputBar
+        inputText={inputText}
+        setInputText={setInputText}
         onSubmit={handleSearch}
       />
       {loading ? (

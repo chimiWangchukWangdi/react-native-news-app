@@ -3,58 +3,31 @@ import { NewsData } from "../models/news.model";
 import Constants from "expo-constants";
 
 const baseApiUrl = Constants.manifest?.extra?.BASE_API_URL;
-const baseApiSearchUrl = Constants.manifest?.extra?.BASE_API_SEARCH_URL;
-const baseApiPushUrl = Constants.manifest?.extra?.BASE_API_PUSH_URL
+const baseApiPushUrl = Constants.manifest?.extra?.BASE_API_PUSH_URL;
 const apiKeyNewsApi = Constants.manifest?.extra?.API_KEY_NEWSAPI;
 const apiKeyNewsData = Constants.manifest?.extra?.API_KEY_NEWSDATA;
 
-/* export const getNewsData = async () => {
+export const getNewsData = async (category?: string) => {
   try {
-    const response = await axios.get(
-      Config.BASE_API_URL ??
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=947cec9dbcf74747b963c311e02eecf0"
-    );
+    const country = "us";
+    let apiUrl = `${baseApiUrl}top-headlines?country=us&apiKey=${apiKeyNewsApi}`;
+    if (category) {
+      apiUrl += `&category=${category}`;
+    }
+    const response = await axios.get(apiUrl);
     return response.data.articles;
   } catch (error) {
-    console.log(error);
+    console.log("this is fetchAsyncNews", error);
     return null;
   }
 };
-
-export const getCategoryNewsData = async (
-  country: string,
-  category: string
-) => {
-  const response = await axios.get(
-    `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=947cec9dbcf74747b963c311e02eecf0`
-  );
-  try {
-    return response.data.articles;
-  } catch (error) {
-    console.log(error);
-  }
-}; */
-
-// export const getNewsData = async (country: string, category?: string) => {
-//   try {
-//     let apiUrl = `${baseApiUrl}${apiKeyNewsApi}`;
-//     if (category) {
-//       apiUrl += `&category=${category}`;
-//     }
-//     const response = await axios.get(apiUrl);
-//     return response.data.articles;
-//   } catch (error) {
-//     console.log("this is getNewsData", error);
-//     return null;
-//   }
-// };
 
 export const searchArticles = async (
   searchText: string
 ): Promise<NewsData[]> => {
   try {
     const response = await axios.get(
-      `${baseApiSearchUrl}q=${searchText}&pageSize=10&apiKey=${apiKeyNewsApi}`
+      `${baseApiUrl}everything?q=${searchText}&pageSize=10&apiKey=${apiKeyNewsApi}`
     );
     return response.data.articles;
   } catch (error) {

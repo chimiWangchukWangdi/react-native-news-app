@@ -5,11 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from "./reducer";
-import axios from "axios";
-import Constants from "expo-constants";
-
-const baseApiUrl = Constants.manifest?.extra?.BASE_API_URL;
-const apiKeyNewsApi = Constants.manifest?.extra?.API_KEY_NEWSAPI;
+import { getNewsData } from "../../services/news.api";
 
 const initialState = {
   newsArray: [],
@@ -18,20 +14,7 @@ const initialState = {
 
 export const fetchAsyncNews = createAsyncThunk(
   "news/fetchAsyncNews",
-  async (category: string) => {
-    try {
-      const country = "us";
-      let apiUrl = `${baseApiUrl}&apiKey=${apiKeyNewsApi}`;
-      if (category) {
-        apiUrl += `&category=${category}`;
-      }
-      const response = await axios.get(apiUrl);
-      return response.data.articles;
-    } catch (error) {
-      console.log("this is fetchAsyncNews", error);
-      return null;
-    }
-  }
+  getNewsData
 );
 
 export const newsSlice = createSlice({

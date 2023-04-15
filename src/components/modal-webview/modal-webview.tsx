@@ -1,13 +1,20 @@
-import { Modal, Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  Modal,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState } from "react";
 import WebView from "react-native-webview";
 import { modalProps } from "../../models/news.model";
 import { styles } from "./style";
 
-const ModelWebview = ({ visible, url, handleBack }: modalProps) => {
+const ModalWebview = ({ visible, url, handleBack }: modalProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const handleLoadStart = () => {
     setIsLoading(true);
+    {console.log('url', url)}
   };
 
   const handleLoadEnd = () => {
@@ -31,7 +38,7 @@ const ModelWebview = ({ visible, url, handleBack }: modalProps) => {
           source={{ uri: url }}
           mediaPlaybackRequiresUserAction={true}
           style={styles.webView}
-          injectedJavaScriptBeforeContentLoadedTimeout={10000}
+          injectedJavaScriptBeforeContentLoadedTimeout={15000}
           onLoadStart={handleLoadStart}
           onLoadEnd={handleLoadEnd}
         />
@@ -40,4 +47,4 @@ const ModelWebview = ({ visible, url, handleBack }: modalProps) => {
   );
 };
 
-export default ModelWebview;
+export default ModalWebview;
