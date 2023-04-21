@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, RefreshControl } from "react-native";
 import { Center, Heading, ScrollView, View, FlatList } from "native-base";
 import { Chip } from "react-native-paper";
@@ -17,7 +17,7 @@ import {
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
-  const data = useSelector(getAllNews);
+  // const data = useSelector(getAllNews);
   const isLoading = useSelector(getLoadingState);
 
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
@@ -39,12 +39,13 @@ export default function CategoryScreen() {
       setNewsData([]);
     } else {
       setSelectedCategory(value);
-      try {
-        await dispatch(fetchAsyncNews(value)).unwrap();
-        setNewsData(data);
-      } catch (error) {
-        console.log("this is setSelectedCategory", error);
-      }
+       dispatch(fetchAsyncNews(value)).then(data =>{ 
+          setNewsData(data.payload)
+       }
+        )
+        .catch((error) => {
+          console.log("Error fetching news data:", error);
+        });
     }
   };
 

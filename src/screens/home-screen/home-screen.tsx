@@ -19,7 +19,8 @@ import * as Notifications from "expo-notifications";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
-  const data: never[] | NewsData[] = useSelector(getAllNews);
+  // const data: never[] | NewsData[] = useSelector(getAllNews);
+  const [newsData, setNewsData] = useState<never[] | NewsData[]>([])
 
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
   const [notification, setNotification] = useState<
@@ -36,11 +37,6 @@ export default function HomeScreen() {
     setRefreshing(true);
     dispatch(clearAllNews());
     dispatch(fetchAsyncNews(""));
-    // .then(() => setRefreshing(false))
-    // .catch((error) => {
-    //   console.error(error);
-    //   setRefreshing(false);
-    // });
     setRefreshing(false);
   };
 
@@ -49,7 +45,9 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    dispatch(fetchAsyncNews(""));
+    dispatch(fetchAsyncNews("")).then(data => {
+      setNewsData(data.payload)
+    });
 
     registerForPushNotificationsAsync().then((token: string | undefined) => {
       setExpoPushToken(token);
@@ -110,7 +108,7 @@ export default function HomeScreen() {
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }
-        data={data}
+        data={newsData}
         renderItem={({ item }: { item: NewsData }) => (
           <Article
             title={item.title}
