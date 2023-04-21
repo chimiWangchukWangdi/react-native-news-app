@@ -1,4 +1,5 @@
 export const Categories = [
+  "local",
   "business",
   "entertainment",
   "general",

@@ -30,11 +30,6 @@ export default function CategoryScreen() {
     setRefreshing(true);
     dispatch(clearAllNews());
     dispatch(fetchAsyncNews(selectedCategory));
-    // .then(() => setRefreshing(false))
-    // .catch((error) => {
-    //   console.error(error);
-    //   setRefreshing(false);
-    // });
     setRefreshing(false);
   };
 
