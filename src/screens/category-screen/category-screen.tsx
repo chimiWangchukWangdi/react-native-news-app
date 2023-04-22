@@ -14,13 +14,16 @@ import {
   getAllNews,
   getLoadingState,
 } from "../../state/newsSlice/newsSlice";
+import LocalArticles, { localNewsData } from "../../components/local-articles";
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
   // const data = useSelector(getAllNews);
   const isLoading = useSelector(getLoadingState);
 
-  const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
+  const [newsData, setNewsData] = useState<
+    NewsData[] | localNewsData[] | never[]
+  >([]);
   // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
@@ -39,10 +42,13 @@ export default function CategoryScreen() {
       setNewsData([]);
     } else {
       setSelectedCategory(value);
-       dispatch(fetchAsyncNews(value)).then(data =>{ 
-          setNewsData(data.payload)
-       }
-        )
+      dispatch(fetchAsyncNews(value))
+        .then(data => {
+          Array.isArray(data.payload) &&
+          //  const dataArray = Object.values(data.payload)
+          setNewsData(data.payload);
+          console.log("data", data);
+        })
         .catch((error) => {
           console.log("Error fetching news data:", error);
         });
@@ -92,12 +98,19 @@ export default function CategoryScreen() {
       </View>
       {isLoading ? (
         <ActivityIndicator size="large" color="#3182CE" />
+      ) : selectedCategory === "local" ? (
+        <FlatList
+          data={newsData as localNewsData[]}
+          renderItem={({ item }: { item: localNewsData }) => (
+            <LocalArticles author={item.author} link={item.link} title={item.title} />
+          )}
+        />
       ) : (
         <FlatList
           refreshControl={
             <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
           }
-          data={newsData}
+          data={newsData as NewsData[]}
           renderItem={({ item }: { item: NewsData }) => (
             <Article
               title={item.title}
