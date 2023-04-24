@@ -17,24 +17,6 @@ import {
 import LocalArticles, { localNewsData } from "../../components/local-articles";
 
 export default function CategoryScreen() {
-  // Requesting geolocation permission
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      // User granted permission, and you can access the location data
-      const { latitude, longitude } = position.coords;
-      // Do something with the latitude and longitude data, e.g., fetch news based on location
-    },
-    (error) => {
-      // Handle error if user denies permission or there's an error getting location data
-      console.log("Error getting location:", error);
-    }
-  );
-} else {
-  // Geolocation is not supported by the browser
-  console.log("Geolocation is not supported by this browser.");
-}
-
   const dispatch = useAppDispatch();
   // const data = useSelector(getAllNews);
   const isLoading = useSelector(getLoadingState);
@@ -61,10 +43,10 @@ if (navigator.geolocation) {
     } else {
       setSelectedCategory(value);
       dispatch(fetchAsyncNews(value))
-        .then(data => {
+        .then((data) => {
           Array.isArray(data.payload) &&
-          //  const dataArray = Object.values(data.payload)
-          setNewsData(data.payload);
+            //  const dataArray = Object.values(data.payload)
+            setNewsData(data.payload);
           console.log("data", data);
         })
         .catch((error) => {
@@ -73,7 +55,7 @@ if (navigator.geolocation) {
     }
   };
 
-  return  (
+  return (
     <View>
       <Center>
         <Heading
@@ -120,27 +102,33 @@ if (navigator.geolocation) {
         <FlatList
           data={newsData as Kuensel[]}
           renderItem={({ item }: { item: Kuensel }) => (
-            <LocalArticles author={item.author} link={item.link} title={item.title} />
-          )}
-        />
-      ) : ( newsData &&
-        <FlatList
-          refreshControl={
-            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-          }
-          data={newsData as NewsData[]}
-          renderItem={({ item }: { item: NewsData }) => (
-            <Article
-              title={item.title}
+            <LocalArticles
               author={item.author}
-              description={item.description}
-              publishedAt={item.publishedAt}
-              urlToImage={item.urlToImage}
-              source={item.source}
-              url={item.url}
+              link={item.link}
+              title={item.title}
             />
           )}
         />
+      ) : (
+        newsData && (
+          <FlatList
+            refreshControl={
+              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            }
+            data={newsData as NewsData[]}
+            renderItem={({ item }: { item: NewsData }) => (
+              <Article
+                title={item.title}
+                author={item.author}
+                description={item.description}
+                publishedAt={item.publishedAt}
+                urlToImage={item.urlToImage}
+                source={item.source}
+                url={item.url}
+              />
+            )}
+          />
+        )
       )}
     </View>
   );
