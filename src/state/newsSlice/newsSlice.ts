@@ -4,13 +4,14 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { RootState } from "./reducer";
+import { RootState } from "../reducer";
 import { getNewsData } from "../../services/news.api";
 
 const initialState = {
   newsArray: [],
   loading: false,
 };
+
 
 export const fetchAsyncNews = createAsyncThunk(
   "news/fetchAsyncNews",

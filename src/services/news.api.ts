@@ -61,3 +61,6 @@ export async function getLatestNewsArticle() {
   console.log("this is the json data", json.results[0]);
   return json.results[0];
 }
+
+
+

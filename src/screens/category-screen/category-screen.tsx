@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, RefreshControl } from "react-native";
 import { Center, Heading, ScrollView, View, FlatList } from "native-base";
 import { Chip } from "react-native-paper";
-import { NewsData } from "../../models/news.model";
+import { Kuensel, NewsData } from "../../models/news.model";
 import Article from "../../components/articles";
 import { styles } from "./style";
 import { Categories } from "../../utils/type";
@@ -17,6 +17,24 @@ import {
 import LocalArticles, { localNewsData } from "../../components/local-articles";
 
 export default function CategoryScreen() {
+  // Requesting geolocation permission
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      // User granted permission, and you can access the location data
+      const { latitude, longitude } = position.coords;
+      // Do something with the latitude and longitude data, e.g., fetch news based on location
+    },
+    (error) => {
+      // Handle error if user denies permission or there's an error getting location data
+      console.log("Error getting location:", error);
+    }
+  );
+} else {
+  // Geolocation is not supported by the browser
+  console.log("Geolocation is not supported by this browser.");
+}
+
   const dispatch = useAppDispatch();
   // const data = useSelector(getAllNews);
   const isLoading = useSelector(getLoadingState);
@@ -55,7 +73,7 @@ export default function CategoryScreen() {
     }
   };
 
-  return (
+  return  (
     <View>
       <Center>
         <Heading
@@ -98,14 +116,14 @@ export default function CategoryScreen() {
       </View>
       {isLoading ? (
         <ActivityIndicator size="large" color="#3182CE" />
-      ) : selectedCategory === "local" ? (
+      ) : selectedCategory === "local" && newsData ? (
         <FlatList
-          data={newsData as localNewsData[]}
-          renderItem={({ item }: { item: localNewsData }) => (
+          data={newsData as Kuensel[]}
+          renderItem={({ item }: { item: Kuensel }) => (
             <LocalArticles author={item.author} link={item.link} title={item.title} />
           )}
         />
-      ) : (
+      ) : ( newsData &&
         <FlatList
           refreshControl={
             <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
