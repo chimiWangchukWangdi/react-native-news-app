@@ -20,6 +20,9 @@ jobs:
 
     - name: Install Yarn
       run: yarn global add yarn # install Yarn globally using Yarn
+    
+    - name: Install Expo CLI
+      run: yarn global add expo-cli # install Expo CLI globally using Yarn
       
     - name: Log in to Expo
       run: expo login -u chimiwangchukwangdi -p Expo_KKSBDW#586 # replace <USERNAME> and <PASSWORD> with your Expo account credentials
@@ -27,9 +30,6 @@ jobs:
     - name: Check Expo login
       run: expo whoami
       continue-on-error: true
-    
-    - name: Install Expo CLI
-      run: yarn global add expo-cli # install Expo CLI globally using Yarn
 
     - name: Install EAS CLI
       run: yarn add @expo/eas-build-job # install EAS CLI using Yarn
