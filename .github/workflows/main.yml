@@ -24,11 +24,14 @@ jobs:
     - name: Install Expo CLI
       run: yarn global add expo-cli # install Expo CLI globally using Yarn
 
+    - name: Install EAS CLI
+      run: yarn global add eas-cli # install EAS CLI globally using Yarn
+
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
 
     - name: Build app
-      run: expo build:android # or expo build:ios, depending on your target platform
+      run: eas build -p android # or eas build -p ios, depending on your target platform
 
     - name: Run tests
       run: expo test # or any other command to run tests
@@ -51,12 +54,14 @@ jobs:
     - name: Install Expo CLI
       run: yarn global add expo-cli # install Expo CLI globally using Yarn
 
+    - name: Install EAS CLI
+      run: yarn global add eas-cli # install EAS CLI globally using Yarn
+
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
 
     - name: Build app
-      run: expo build:android # or expo build:ios, depending on your target platform
+      run: eas build -p android # or eas build -p ios, depending on your target platform
 
     - name: Deploy to app distribution
       run: expo upload:android # or expo upload:ios, depending on your target platform
-
