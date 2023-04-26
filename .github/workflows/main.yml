@@ -19,7 +19,7 @@ jobs:
         node-version: 14 # specify the Node.js version to use
 
     - name: Install Yarn
-      run: npm install -g yarn # install Yarn globally
+      run: yarn global add yarn # install Yarn globally using Yarn
 
     - name: Install Expo CLI
       run: yarn global add expo-cli # install Expo CLI globally using Yarn
@@ -30,9 +30,11 @@ jobs:
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
 
-    - name: Build app
-      run: eas build -p android # or eas build -p ios, depending on your target platform
+    - name: Build Android
+      run: yarn eas build -p android
 
+    - name: Build iOS
+      run: yarn eas build -p ios
     - name: Run tests
       run: expo test # or any other command to run tests
 
@@ -49,7 +51,7 @@ jobs:
         node-version: 14 # specify the Node.js version to use
 
     - name: Install Yarn
-      run: npm install -g yarn # install Yarn globally
+      run: yarn global add yarn # install Yarn globally using Yarn
 
     - name: Install Expo CLI
       run: yarn global add expo-cli # install Expo CLI globally using Yarn
