@@ -34,10 +34,10 @@ jobs:
       run: expo login -u chimiwangchukwangdi -p Expo_KKSBDW#586 # replace <USERNAME> and <PASSWORD> with your Expo account credentials
 
     - name: Build Android
-      run: yarn eas build -p android
+      run: npx eas build -p android
 
     - name: Build iOS
-      run: yarn eas build -p ios
+      run: npx eas build -p ios
       
     - name: Run tests
       run: expo test # or any other command to run tests
