@@ -29,6 +29,9 @@ jobs:
 
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
+      
+    - name: Log in to Expo
+      run: expo login -u chimiwangchukwangdi -p Expo_KKSBDW#586 # replace <USERNAME> and <PASSWORD> with your Expo account credentials
 
     - name: Build Android
       run: yarn eas build -p android
@@ -60,11 +63,4 @@ jobs:
     - name: Install EAS CLI
       run: yarn global add eas-cli # install EAS CLI globally using Yarn
 
-    - name: Install dependencies
-      run: yarn install # install dependencies using Yarn
-
-    - name: Build app
-      run: eas build -p android # or eas build -p ios, depending on your target platform
-
-    - name: Deploy to app distribution
-      run: expo upload:android # or expo upload:ios, depending on your target platform
+    - name: Install
