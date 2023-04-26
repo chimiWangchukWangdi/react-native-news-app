@@ -16,7 +16,8 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v2 # set up Node.js
       with:
-        node-version: 14 # specify the Node.js version to use
+        node-version: 16 # specify the Node.js version to use (example: version 16)
+
 
     - name: Install Yarn
       run: yarn global add yarn # install Yarn globally using Yarn
