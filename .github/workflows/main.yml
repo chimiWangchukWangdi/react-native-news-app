@@ -64,3 +64,5 @@ jobs:
       run: yarn global add eas-cli # install EAS CLI globally using Yarn
 
     - name: Install
+      run: echo "This is the install step"
+
