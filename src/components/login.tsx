@@ -69,8 +69,8 @@ const Login = () => {
         <Image
           source={require("../../assets/news-app-logo.png")}
           alt="Logo"
-          size="2xl"
           resizeMode="contain"
+          size="2xl"
         />
       </View>
       <View width="80%">
