@@ -25,7 +25,7 @@ jobs:
       run: yarn global add expo-cli # install Expo CLI globally using Yarn
 
     - name: Install EAS CLI
-      run: yarn global add @expo/eas-cli # install EAS CLI using Yarn
+      run: yarn add @expo/eas-cli # install EAS CLI using Yarn
 
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
