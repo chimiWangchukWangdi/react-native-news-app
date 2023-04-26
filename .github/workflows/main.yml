@@ -1,0 +1,62 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main # specify the branch you want to trigger the workflow on
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest # specify the operating system for the job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2 # check out the repository code
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2 # set up Node.js
+      with:
+        node-version: 14 # specify the Node.js version to use
+
+    - name: Install Yarn
+      run: npm install -g yarn # install Yarn globally
+
+    - name: Install Expo CLI
+      run: yarn global add expo-cli # install Expo CLI globally using Yarn
+
+    - name: Install dependencies
+      run: yarn install # install dependencies using Yarn
+
+    - name: Build app
+      run: expo build:android # or expo build:ios, depending on your target platform
+
+    - name: Run tests
+      run: expo test # or any other command to run tests
+
+  deploy:
+    runs-on: ubuntu-latest # specify the operating system for the job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2 # check out the repository code
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2 # set up Node.js
+      with:
+        node-version: 14 # specify the Node.js version to use
+
+    - name: Install Yarn
+      run: npm install -g yarn # install Yarn globally
+
+    - name: Install Expo CLI
+      run: yarn global add expo-cli # install Expo CLI globally using Yarn
+
+    - name: Install dependencies
+      run: yarn install # install dependencies using Yarn
+
+    - name: Build app
+      run: expo build:android # or expo build:ios, depending on your target platform
+
+    - name: Deploy to app distribution
+      run: expo upload:android # or expo upload:ios, depending on your target platform
+
