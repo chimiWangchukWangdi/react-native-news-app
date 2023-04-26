@@ -35,7 +35,7 @@ jobs:
       run: yarn add @expo/eas-build-job # install EAS CLI using Yarn
       
     - name: Check EAS CLI
-      run: npx eas --version || echo "EAS CLI not found" # check if EAS CLI is installed
+      run: yarn eas --version || echo "EAS CLI not found" # check if EAS CLI is installed
 
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
