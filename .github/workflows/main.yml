@@ -18,10 +18,16 @@ jobs:
       with:
         node-version: 16 # specify the Node.js version to use (example: version 16)
 
-
     - name: Install Yarn
       run: yarn global add yarn # install Yarn globally using Yarn
-
+      
+    - name: Log in to Expo
+      run: expo login -u chimiwangchukwangdi -p Expo_KKSBDW#586 # replace <USERNAME> and <PASSWORD> with your Expo account credentials
+    
+    - name: Check Expo login
+      run: expo whoami
+      continue-on-error: true
+    
     - name: Install Expo CLI
       run: yarn global add expo-cli # install Expo CLI globally using Yarn
 
@@ -34,9 +40,6 @@ jobs:
     - name: Install dependencies
       run: yarn install # install dependencies using Yarn
       
-    - name: Log in to Expo
-      run: expo login -u chimiwangchukwangdi -p Expo_KKSBDW#586 # replace <USERNAME> and <PASSWORD> with your Expo account credentials
-
     - name: Build Android
       run: npx eas build -p android
 
