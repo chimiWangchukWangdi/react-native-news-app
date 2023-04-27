@@ -12,7 +12,6 @@ export const getNewsData = async (category?: string) => {
     try {
       let apiUrl = "https://kuenselonline.com/wp-json/wp/v2/posts";
       const response = await axios.get(apiUrl);
-      console.log('kuensel', response)
       return response.data;
     } catch (error) {
       console.log("this is fetchAsyncNews-local", error);

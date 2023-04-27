@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ActivityIndicator, RefreshControl } from "react-native";
 import { Center, Heading, ScrollView, View, FlatList } from "native-base";
 import { Chip } from "react-native-paper";
@@ -22,8 +22,9 @@ export default function CategoryScreen() {
   const isLoading = useSelector(getLoadingState);
 
   const [newsData, setNewsData] = useState<
-    NewsData[] | localNewsData[] | never[]
+    NewsData[] | never[]
   >([]);
+  const [localNewsData, setLocalNewsData] = useState<localNewsData[]>([]);
   // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
@@ -37,21 +38,18 @@ export default function CategoryScreen() {
   };
 
   const handleSelect = async (value: string) => {
-    if (selectedCategory === value) {
-      setSelectedCategory("");
-      setNewsData([]);
-    } else {
-      setSelectedCategory(value);
-      dispatch(fetchAsyncNews(value))
-        .then((data) => {
-          Array.isArray(data.payload) &&
-            //  const dataArray = Object.values(data.payload)
-            setNewsData(data.payload);
-          console.log("data", data);
-        })
-        .catch((error) => {
-          console.log("Error fetching news data:", error);
-        });
+    try {
+      const { payload } = await dispatch(fetchAsyncNews(value));
+      if (value === "local") {
+        setLocalNewsData(payload);
+        setSelectedCategory(prevValue => prevValue === value ? "" : value);
+        setNewsData([]);
+      } else {
+        setNewsData(payload);
+        setSelectedCategory(prevValue => prevValue === value ? "" : value);
+      }
+    } catch (error) {
+      console.log("Error fetching news data:", error);
     }
   };
 
@@ -98,9 +96,9 @@ export default function CategoryScreen() {
       </View>
       {isLoading ? (
         <ActivityIndicator size="large" color="#3182CE" />
-      ) : selectedCategory === "local" && newsData ? (
+      ) : selectedCategory === "local" && localNewsData ? (
         <FlatList
-          data={newsData as Kuensel[]}
+          data={localNewsData as Kuensel[]}
           renderItem={({ item }: { item: Kuensel }) => (
             <LocalArticles
               author={item.author}
