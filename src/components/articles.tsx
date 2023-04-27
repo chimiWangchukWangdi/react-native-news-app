@@ -7,6 +7,8 @@ import {
   Image,
   VStack,
   Divider,
+  IconButton,
+  ShareIcon,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -23,6 +25,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { Share } from "react-native";
 
 const Article = (props: NewsData) => {
   const [showWebView, setShowWebView] = useState(false);
@@ -84,6 +87,15 @@ const Article = (props: NewsData) => {
       console.log("Error adding/updating rating: ", error);
     }
   };
+
+  const shareNews = () => {
+    Share.share({
+      title: props.title,
+      message: props.title,
+      url: props.url,
+    });
+  };
+
   return (
     <Box p={3}>
       <HStack justifyContent="space-between">
@@ -126,12 +138,21 @@ const Article = (props: NewsData) => {
               </Text>
             </HStack>
           </TouchableOpacity>
+          
+          <HStack justifyContent="space-between" alignItems="center">
           <StarRating
             starSize={20}
             color="#3182CE"
             rating={rating}
             onChange={handleSubmitRating}
           />
+          <IconButton
+            variant="unstyled"
+            icon={<ShareIcon size="sm" color="#4299E1" />}
+            onPress={shareNews}
+          />
+          </HStack>
+          
         </VStack>
         <Image
           width="30%"
