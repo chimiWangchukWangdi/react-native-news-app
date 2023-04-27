@@ -10,6 +10,7 @@ import { getNewsData } from "../../services/news.api";
 const initialState = {
   newsArray: [],
   loading: false,
+  isDarkMode: false
 };
 
 
@@ -38,7 +39,10 @@ export const newsSlice = createSlice({
       .addCase(clearAllNews, (state) => {
         state.newsArray = [];
         state.loading = true;
-      });
+      })
+      .addCase(darkMode, (state) => {
+        state.isDarkMode = !state.isDarkMode;
+      })
   },
 });
 
@@ -54,6 +58,12 @@ export const getLoadingState = createSelector(
   (state) => state.loading
 );
 
+export const getIsDarkMode = createSelector(
+  selectLoadingState,
+  (state) => state.isDarkMode
+);
+
 export const clearAllNews = createAction("news/ClearAll");
+export const darkMode = createAction("news/darkMode");
 
 export default newsSlice.reducer;

@@ -4,12 +4,15 @@ import { Center, Text, View, FlatList, Heading, Box, Input } from "native-base";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ModalWebview from "../components/modal-webview/modal-webview";
 import InputBar from "../components/search-bar/input-bar";
+import { useSelector } from "react-redux";
+import { getIsDarkMode } from "../state/newsSlice/newsSlice";
 
 const RssFeedReader = () => {
   const [feed, setFeed] = useState<Feed>();
   const [showWebView, setShowWebView] = useState<boolean>(false);
   const [webViewUrl, setWebViewUrl] = useState<string>("");
   const [inputText, setInputText] = useState<string>("");
+  const isDarkMode = useSelector(getIsDarkMode);
 
   const fetchRss = async (rssUrl: string) => {
     const response = await fetch(rssUrl);
@@ -71,10 +74,11 @@ const RssFeedReader = () => {
                   fontWeight="medium"
                   numberOfLines={2}
                   mb={2}
+                  color= {isDarkMode ? "gray.100" : "gray.700"}
                 >
                   {item.title}
                 </Text>
-                <Text fontSize="sm" color="gray.500" numberOfLines={3} mb={2}>
+                <Text fontSize="sm" color= {isDarkMode ? "gray.100" : "gray.700"} numberOfLines={3} mb={2}>
                   {item.description}
                 </Text>
               </TouchableOpacity>

@@ -26,10 +26,13 @@ import {
   where,
 } from "firebase/firestore";
 import { Share } from "react-native";
+import { useSelector } from "react-redux";
+import { getIsDarkMode } from "../state/newsSlice/newsSlice";
 
 const Article = (props: NewsData) => {
   const [showWebView, setShowWebView] = useState(false);
   const [rating, setRating] = useState<number>(0);
+  const isDarkMode = useSelector(getIsDarkMode);
 
   useEffect(() => {
     const fetchRating = async() => {
@@ -39,7 +42,6 @@ const Article = (props: NewsData) => {
           where("articleTitle", "==", props.title)
         )
       );
-      console.log('fetchRating inn', querySnapShot)
       if (!querySnapShot.empty) {
         const docSnapshot = querySnapShot.docs[0];
         setRating(docSnapshot.data().rating);
@@ -100,12 +102,12 @@ const Article = (props: NewsData) => {
     <Box p={3}>
       <HStack justifyContent="space-between">
         <VStack width="65%">
-          <Heading fontSize="md" fontWeight="medium" numberOfLines={2} mb={2}>
+          <Heading fontSize="md" fontWeight="medium" numberOfLines={2} mb={2} color= {isDarkMode ? "gray.100" : "gray.700"}>
             {props.title}
           </Heading>
           <HStack mb={1}>
             <Ionicons name="person-outline" size={16} color="#4299E1" mr={2} />
-            <Text fontSize="xs" color="gray.700">
+            <Text fontSize="xs" color= {isDarkMode ? "gray.100" : "gray.700"}>
               {props.author}
             </Text>
           </HStack>
@@ -117,7 +119,7 @@ const Article = (props: NewsData) => {
               mr={2}
             />
             {props.source && (
-              <Text fontSize="xs" color="gray.700">
+              <Text fontSize="xs" color= {isDarkMode ? "gray.100" : "gray.700"}>
                 {props.source.name}
               </Text>
             )}

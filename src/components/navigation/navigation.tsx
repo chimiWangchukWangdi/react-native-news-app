@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import BottomTabs from "./bottom-tabs";
@@ -12,13 +12,20 @@ import {
 import Login from "../login";
 import { TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Text } from "native-base";
+import { Text, Button } from "native-base";
+import { darkMode } from "../../state/newsSlice/newsSlice";
 
 const Drawer = createDrawerNavigator();
 
 function Navigation() {
   const isLoggedIn = useSelector(getLoggedInState);
   const dispatch = useDispatch();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handleToggle = () => {
+    dispatch(darkMode());
+    setIsDarkMode(!isDarkMode);
+  };
 
   // Logout handler
   const handleLogout = () => {
@@ -42,12 +49,15 @@ function Navigation() {
             Logout
           </Text>
         </TouchableOpacity>
+        <Button onPress={handleToggle}>
+          {isDarkMode ? "Light Mode" : "Dark Mode"}
+        </Button>
       </View>
     );
   };
 
   return (
-    <NavigationContainer>
+      <NavigationContainer>
       {isLoggedIn ? (
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawer {...props} />}
@@ -59,12 +69,11 @@ function Navigation() {
               headerTitle: () => <CustomHeaderTitle />,
             }}
           />
-          <Drawer.Screen name="Rss Feed" component={RssFeedReader} />
         </Drawer.Navigator>
       ) : (
         <Login />
       )}
-    </NavigationContainer>
+    </NavigationContainer>    
   );
 }
 

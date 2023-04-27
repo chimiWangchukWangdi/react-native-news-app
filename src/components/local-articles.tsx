@@ -6,6 +6,8 @@ import {
   Text,
   Divider,
   Image,
+  IconButton,
+  ShareIcon,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
@@ -15,10 +17,14 @@ import { addDoc, collection, doc, getDocs, query, updateDoc, where } from "fireb
 import { db } from "../../firebaseConfig";
 import { localNewsData } from "../models/news.model";
 import StarRating from "react-native-star-rating-widget";
+import { Share } from "react-native";
+import { useSelector } from "react-redux";
+import { getIsDarkMode } from "../state/newsSlice/newsSlice";
 
 function LocalArticles(props: localNewsData) {
   const [showWebView, setShowWebView] = useState(false);
   const [rating, setRating] = useState<number>(0);
+  const isDarkMode = useSelector(getIsDarkMode);
 
   useEffect(() => {
     const fetchRating = async () => {
@@ -77,16 +83,24 @@ function LocalArticles(props: localNewsData) {
     }
   };
 
+  const shareNews = () => {
+    Share.share({
+      title: props.title.rendered,
+      message: props.title.rendered,
+      url: props.link,
+    });
+  };
+
   return (
     <Box p={3}>
       <HStack justifyContent="space-between">
         <VStack width="65%">
-          <Heading fontSize="md" fontWeight="medium" numberOfLines={2} mb={2}>
+          <Heading fontSize="md" fontWeight="medium" numberOfLines={2} mb={2} color= {isDarkMode ? "gray.100" : "gray.700"}>
             {props.title.rendered}
           </Heading>
           <HStack mb={1}>
             <Ionicons name="person-outline" size={16} color="#4299E1" mr={2} />
-            <Text fontSize="xs" color="gray.700">
+            <Text fontSize="xs" color= {isDarkMode ? "gray.100" : "gray.700"} >
               Kuensel
             </Text>
           </HStack>
@@ -97,7 +111,7 @@ function LocalArticles(props: localNewsData) {
               color="#4299E1"
               mr={2}
             />
-            <Text fontSize="xs" color="gray.700">
+            <Text fontSize="xs" color= {isDarkMode ? "gray.100" : "gray.700"}>
               Kuensel
             </Text>
           </HStack>
@@ -117,12 +131,19 @@ function LocalArticles(props: localNewsData) {
               </Text>
             </HStack>
           </TouchableOpacity>
+          <HStack justifyContent="space-between" alignItems="center">
           <StarRating
             starSize={20}
             color="#3182CE"
             rating={rating}
             onChange={handleSubmitRating}
           />
+          <IconButton
+            variant="unstyled"
+            icon={<ShareIcon size="sm" color="#4299E1" />}
+            onPress={shareNews}
+          />
+          </HStack>
         </VStack>
         <Image
           height={70}

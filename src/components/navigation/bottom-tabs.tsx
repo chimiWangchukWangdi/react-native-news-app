@@ -5,12 +5,15 @@ import CategoryScreen from "../../screens/category-screen/category-screen";
 import SearchScreen from "../../screens/search-screen/search-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHome, faSearch, faList, IconDefinition, faRss } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { getIsDarkMode } from "../../state/newsSlice/newsSlice";
 import RssFeedReader from "../../screens/rss-feed-reader";
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
   const [open, setOpen] = React.useState(false);
+  const isDarkMode = useSelector(getIsDarkMode);
 
   return (
     <Tab.Navigator
@@ -33,10 +36,11 @@ function BottomTabs() {
         tabBarActiveTintColor: "#3182CE",
         tabBarInactiveTintColor: "gray",
       })}
-      // sceneContainerStyle={{
-      //   flex: 1,
-      //   paddingBottom: 20
-      // }}
+      sceneContainerStyle={{
+        flex: 1,
+        paddingBottom: 20,
+        backgroundColor: isDarkMode ? "#3d3d3d" : "#fff"
+      }}
     >
       <Tab.Screen
         name="Home"
@@ -53,11 +57,11 @@ function BottomTabs() {
         component={SearchScreen}
         options={{ headerShown: false }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="RssFeed"
         component={RssFeedReader}
         options={{ headerShown: false }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }
