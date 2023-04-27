@@ -1,10 +1,21 @@
 import React from "react";
 import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHome, faList, faSearch, faRss  } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faList, faSearch, faRss, fa4  } from "@fortawesome/free-solid-svg-icons";
+import { setIsLoggedOut } from "../../state/auth-state/authSlice";
+import { useDispatch } from "react-redux";
+
 
 function CustomDrawer(props: DrawerContentComponentProps) {
+  const dispatch = useDispatch();
   const { navigation } = props;
+  
+   // Logout handler
+   const handleLogout = () => {
+    // Dispatch the logout action from authSlice
+    dispatch(setIsLoggedOut());
+  };
+
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItem
@@ -31,8 +42,19 @@ function CustomDrawer(props: DrawerContentComponentProps) {
           <FontAwesomeIcon icon={faRss} size={18} color="#3182CE" />
         )}
       />
+      <DrawerItem
+        label="log-out"
+        onPress={() => handleLogout()}
+        icon={() => (
+          <FontAwesomeIcon icon={fa4} size={18} color="#3182CE" />
+        )}
+      />
     </DrawerContentScrollView>
   );
 }
 
 export default CustomDrawer;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+
