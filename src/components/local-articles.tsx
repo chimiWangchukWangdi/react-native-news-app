@@ -6,52 +6,38 @@ import {
   Text,
   Divider,
   Image,
-  Center,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import ModalWebview from "./modal-webview/modal-webview";
-
-export interface localNewsData {
-  //   acf: Array<number>,
-  author: number;
-  //   categories: Array<number>,
-  //   comment_status: string,
-  //   content: {
-  //     protected: boolean
-  //     rendered: string
-  //   },
-  //   date: string,
-  //   date_gmt: string,
-  //   excerpt: {
-  //     protected: boolean
-  //     rendered: string
-  //   },
-  //   featured_media: number,
-  //   format: string,
-  //   guid: {
-  //     rendered: string
-  //   },
-  //   id: number,
-  link: string;
-  //   meta: Array<number>,
-  //   modified: string,
-  //   modified_gmt: string,
-  //   ping_status: string,
-  //   slug: string,
-  //   status: string,
-  //   sticky: false,
-  //   tags: Array<number>,
-  //   template: string,
-  title: {
-    rendered: string;
-  };
-  //   type: string
-}
+import { addDoc, collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { localNewsData } from "../models/news.model";
+import StarRating from "react-native-star-rating-widget";
 
 function LocalArticles(props: localNewsData) {
   const [showWebView, setShowWebView] = useState(false);
+  const [rating, setRating] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchRating = async () => {
+      const querySnapShot = await getDocs(
+        query(
+          collection(db, "articles"),
+          where("articleTitle", "==", props.title)
+        )
+      );
+      console.log("fetchRating inn", querySnapShot);
+      if (!querySnapShot.empty) {
+        const docSnapshot = querySnapShot.docs[0];
+        setRating(docSnapshot.data().rating);
+      } else {
+        setRating(0);
+      }
+    };
+    fetchRating();
+  }, []);
 
   const handleReadMore = () => {
     setShowWebView(true);
@@ -59,6 +45,36 @@ function LocalArticles(props: localNewsData) {
 
   const handleBack = () => {
     setShowWebView(false);
+  };
+
+  const handleSubmitRating = async (startValue: number) => {
+    setRating(startValue);
+    const articleTitle = props.title;
+
+    try {
+      const querySnapShot = await getDocs(
+        query(
+          collection(db, "articles"),
+          where("articleTitle", "==", articleTitle)
+        )
+      );
+
+      if (querySnapShot.docs.length > 0) {
+        // Update existing rating document
+        const ratingRef = doc(db, "articles", querySnapShot.docs[0].id);
+        await updateDoc(ratingRef, { rating: startValue });
+        console.log("Rating updated for article ", articleTitle);
+      } else {
+        // Create new rating document
+        const ratingRef = await addDoc(collection(db, "articles"), {
+          articleTitle: articleTitle,
+          rating: startValue,
+        });
+        console.log("New rating added for article ", articleTitle);
+      }
+    } catch (error) {
+      console.log("Error adding/updating rating: ", error);
+    }
   };
 
   return (
@@ -101,13 +117,18 @@ function LocalArticles(props: localNewsData) {
               </Text>
             </HStack>
           </TouchableOpacity>
+          <StarRating
+            starSize={20}
+            color="#3182CE"
+            rating={rating}
+            onChange={handleSubmitRating}
+          />
         </VStack>
         <Image
           height={70}
           flex={1}
           width="30%"
           borderRadius={10}
-          //height={120}
           resizeMode="center"
           source={{
             uri: "https://kuenselonline.com/wp-content/uploads/2021/05/logo-1-1.png",

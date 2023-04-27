@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RefreshControl,  } from "react-native";
+import { ActivityIndicator, RefreshControl } from "react-native";
 import { Center, FlatList, Heading, View } from "native-base";
 import Article from "../../components/articles";
 import { useAppDispatch } from "../../state/store";
@@ -7,8 +7,8 @@ import {
   clearAllNews,
   fetchAsyncNews,
   getAllNews,
+  getLoadingState,
 } from "../../state/newsSlice/newsSlice";
-import { useSelector } from "react-redux";
 import { NewsData } from "../../models/news.model";
 import ModalWebview from "../../components/modal-webview/modal-webview";
 import {
@@ -16,11 +16,12 @@ import {
   sendPushNotification,
 } from "../../utils/pushNotifications";
 import * as Notifications from "expo-notifications";
+import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
   // const data: never[] | NewsData[] = useSelector(getAllNews);
-  const [newsData, setNewsData] = useState<never[] | NewsData[]>([])
+  const [newsData, setNewsData] = useState<never[] | NewsData[]>([]);
 
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
   const [notification, setNotification] = useState<
@@ -32,11 +33,15 @@ export default function HomeScreen() {
   const [showWebView, setShowWebView] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
+  const isLoading = useSelector(getLoadingState);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
+    setNewsData([]);
     dispatch(clearAllNews());
-    dispatch(fetchAsyncNews(""));
+    dispatch(fetchAsyncNews("")).then((data) => {
+      setNewsData(data.payload);
+    });
     setRefreshing(false);
   };
 
@@ -45,8 +50,8 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    dispatch(fetchAsyncNews("")).then(data => {
-      setNewsData(data.payload)
+    dispatch(fetchAsyncNews("")).then((data) => {
+      setNewsData(data.payload);
     });
 
     registerForPushNotificationsAsync().then((token: string | undefined) => {
@@ -104,23 +109,27 @@ export default function HomeScreen() {
           await sendPushNotification(expoPushToken);
         }}
       /> */}
-      <FlatList
-        refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-        }
-        data={newsData}
-        renderItem={({ item }: { item: NewsData }) => (
-          <Article
-            title={item.title}
-            author={item.author}
-            description={item.description}
-            publishedAt={item.publishedAt}
-            urlToImage={item.urlToImage}
-            source={item.source}
-            url={item.url}
-          />
-        )}
-      />
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#3182CE" />
+      ) : (
+        <FlatList
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+          }
+          data={newsData}
+          renderItem={({ item }: { item: NewsData }) => (
+            <Article
+              title={item.title}
+              author={item.author}
+              description={item.description}
+              publishedAt={item.publishedAt}
+              urlToImage={item.urlToImage}
+              source={item.source}
+              url={item.url}
+            />
+          )}
+        />
+      )}
     </View>
   );
 }

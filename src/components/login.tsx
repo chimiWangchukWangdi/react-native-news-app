@@ -5,7 +5,7 @@ import { FirebaseError } from "firebase/app";
 import { useAppDispatch } from "../state/store";
 import { setIsLoggedIn } from "../state/auth-state/authSlice";
 import { auth } from "../../firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 
 const Login = () => {
@@ -52,7 +52,18 @@ const Login = () => {
   };
 
   const handleLoginWithGoogle = () => {
-    // Implement Google login logic here
+    const provider = new GoogleAuthProvider();
+    if (validateForm()) {
+    signInWithPopup(auth, provider)
+      .then(() => {
+        // Handle successful login
+        console.log("User logged in successfully with Google");
+        dispatch(setIsLoggedIn());
+      })
+      .catch((error: FirebaseError) => {
+        // Handle login error
+        console.log("Google Login Error", error.message);
+      });}
   };
 
   const handleLoginWithFacebook = () => {

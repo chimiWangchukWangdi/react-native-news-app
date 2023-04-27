@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ActivityIndicator, RefreshControl } from "react-native";
 import { Center, Heading, ScrollView, View, FlatList } from "native-base";
 import { Chip } from "react-native-paper";
-import { Kuensel, NewsData } from "../../models/news.model";
+import { NewsData, localNewsData } from "../../models/news.model";
 import Article from "../../components/articles";
 import { styles } from "./style";
 import { Categories } from "../../utils/type";
@@ -14,7 +14,7 @@ import {
   getAllNews,
   getLoadingState,
 } from "../../state/newsSlice/newsSlice";
-import LocalArticles, { localNewsData } from "../../components/local-articles";
+import LocalArticles from "../../components/local-articles";
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
@@ -98,8 +98,8 @@ export default function CategoryScreen() {
         <ActivityIndicator size="large" color="#3182CE" />
       ) : selectedCategory === "local" && localNewsData ? (
         <FlatList
-          data={localNewsData as Kuensel[]}
-          renderItem={({ item }: { item: Kuensel }) => (
+          data={localNewsData}
+          renderItem={({ item }: { item: localNewsData }) => (
             <LocalArticles
               author={item.author}
               link={item.link}
@@ -113,7 +113,7 @@ export default function CategoryScreen() {
             refreshControl={
               <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
             }
-            data={newsData as NewsData[]}
+            data={newsData}
             renderItem={({ item }: { item: NewsData }) => (
               <Article
                 title={item.title}
