@@ -5,7 +5,14 @@ import { FirebaseError } from "firebase/app";
 import { useAppDispatch } from "../state/store";
 import { setIsLoggedIn } from "../state/auth-state/authSlice";
 import { auth } from "../../firebaseConfig";
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  UserCredential,
+  signInWithPopup,
+  getRedirectResult,
+  signInWithEmailAndPassword,
+  signInWithRedirect,
+} from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 
 const Login = () => {
@@ -40,6 +47,7 @@ const Login = () => {
     if (validateForm()) {
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
+          debugger
           // Handle successful login
           console.log("User logged in successfully");
           dispatch(setIsLoggedIn());
@@ -53,30 +61,36 @@ const Login = () => {
 
   const handleLoginWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    if (validateForm()) {
-    signInWithPopup(auth, provider)
-      .then(() => {
-        // Handle successful login
-        console.log("User logged in successfully with Google");
-        dispatch(setIsLoggedIn());
-      })
-      .catch((error: FirebaseError) => {
-        // Handle login error
-        console.log("Google Login Error", error.message);
-      });}
-  };
-
-  const handleLoginWithFacebook = () => {
-    // Implement Facebook login logic here
-  };
-
-  const handleLoginWithApple = () => {
-    // Implement Apple login logic here
+    // console.log('this is signInWithRedirect', signInWithRedirect( auth, provider))
+    debugger
+    // signInWithRedirect(auth, provider); 
+    signInWithPopup(auth, provider);
+    debugger   
+    getRedirectResult(auth)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access Google APIs.
+      const credential = GoogleAuthProvider.credentialFromResult(result as UserCredential );
+      const token = credential?.accessToken;
+  
+      // The signed-in user info.
+      const user = result?.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
   };
 
   return (
-    <View justifyContent="normal" alignItems="center" bg="white">
-      <View marginTop={20} marginBottom={0}>
+    <View justifyContent="center" alignItems="center" bg="white" height="100%">
+      <View marginBottom={8}>
         <Image
           source={require("../../assets/news-app-logo.png")}
           alt="Logo"
@@ -142,47 +156,6 @@ const Login = () => {
           <Text style={{ color: "white", fontSize: 16 }}>
             Login with Google
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleLoginWithFacebook()}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#1877F2",
-            borderRadius: 5,
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-            marginBottom: 10,
-          }}
-        >
-          <Ionicons
-            name="logo-facebook"
-            size={24}
-            color="white"
-            style={{ marginRight: 10 }}
-          />
-          <Text style={{ color: "white", fontSize: 16 }}>
-            Login with Facebook
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleLoginWithApple()}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000000",
-            borderRadius: 5,
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-          }}
-        >
-          <Ionicons
-            name="logo-apple"
-            size={24}
-            color="white"
-            style={{ marginRight: 10 }}
-          />
-          <Text style={{ color: "white", fontSize: 16 }}>Login with Apple</Text>
         </TouchableOpacity>
       </View>
     </View>
