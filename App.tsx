@@ -7,7 +7,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { customTheme } from "./src/styles/theme";
 import Navigation from "./src/components/navigation/navigation";
 import { Provider } from "react-redux";
-import { store } from "./src/state/store";
+import { persistor, store } from "./src/state/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function App() {
   useFonts({
@@ -16,10 +17,12 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <NativeBaseProvider theme={customTheme}>
-          <StatusBar translucent backgroundColor="transparent" />
-          <Navigation />
-        </NativeBaseProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <NativeBaseProvider theme={customTheme}>
+            <StatusBar translucent backgroundColor="transparent" />
+            <Navigation />
+          </NativeBaseProvider>
+        </PersistGate>
       </Provider>
     </SafeAreaProvider>
   );
