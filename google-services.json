@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "367988516952",
+    "project_id": "react-native-news-app-7cc1e",
+    "storage_bucket": "react-native-news-app-7cc1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367988516952:android:92aaa5397003a5a75a022d",
+        "android_client_info": {
+          "package_name": "com.newsapp.chimi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367988516952-5clh3284osqusbivfdaqeao6q630bt1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.newsapp.chimi",
+            "certificate_hash": "4d21552b39e79ea1a13611936d44f80573d62b19"
+          }
+        },
+        {
+          "client_id": "367988516952-dams5i036mm0slnmo2ajdpdnnj3nguvk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.newsapp.chimi",
+            "certificate_hash": "7e33a9c38bfa9d12adf9e3217c114ee35dbc5bf5"
+          }
+        },
+        {
+          "client_id": "367988516952-cb1s1hsreiqepmltmmkuj7noep0n2adv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClmYh-usAMbpjQfI4YTHvCTjNhDNVFahE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367988516952-cb1s1hsreiqepmltmmkuj7noep0n2adv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "367988516952-anj56vqqjo5c434ppkn01aoi1s2ip602.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chimiww.newsapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

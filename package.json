@@ -12,6 +12,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-firebase/app": "^17.4.3",
+    "@react-native-firebase/auth": "^17.4.3",
+    "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
@@ -44,6 +47,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.0.14",
+    "@types/react-native-google-signin": "^1.0.3",
     "@types/redux-persist": "^4.3.1",
     "expo-dev-client": "~2.2.1",
     "typescript": "^4.9.4"

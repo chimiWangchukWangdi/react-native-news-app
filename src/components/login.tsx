@@ -1,92 +1,71 @@
-import React, { useState } from "react";
-import { View, Button, Image } from "native-base";
-import { TextInput, TouchableOpacity, Text } from "react-native";
-import { FirebaseError } from "firebase/app";
+import React, { useEffect, useState } from "react";
+import { View, Image, Text, Center } from "native-base";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { useAppDispatch } from "../state/store";
 import { setIsLoggedIn } from "../state/auth-state/authSlice";
-import { auth } from "../../firebaseConfig";
-import {
-  GoogleAuthProvider,
-  UserCredential,
-  signInWithPopup,
-  getRedirectResult,
-  signInWithEmailAndPassword,
-  signInWithRedirect,
-} from "firebase/auth";
+import auth from "@react-native-firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from "@react-native-google-signin/google-signin";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const dispatch = useAppDispatch();
 
-  const validateForm = () => {
-    let isValid = true;
-    setEmailError("");
-    setPasswordError("");
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
-    if (!email) {
-      setEmailError("Email is required");
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Invalid email format");
-      isValid = false;
+  GoogleSignin.configure({
+    webClientId:
+      "367988516952-cb1s1hsreiqepmltmmkuj7noep0n2adv.apps.googleusercontent.com",
+  });
+
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(false);
+
+  // Handle user state changes
+  function onAuthStateChanged(user: any) {
+    if (user) {
+      dispatch(setIsLoggedIn());
+      if (initializing) setInitializing(false);
     }
+  }
 
-    if (!password) {
-      setPasswordError("Password is required");
-      isValid = false;
-    }
+  const onGoogleButtonPress = async () => {
+    try {
+      setInitializing(true);
+      // Check if your device supports Google Play
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn();
 
-    return isValid;
-  };
-
-  const handleLogin = () => {
-    if (validateForm()) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          debugger
-          // Handle successful login
-          console.log("User logged in successfully");
-          dispatch(setIsLoggedIn());
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // Sign-in the user with the credential
+      const user_sign_in = auth().signInWithCredential(googleCredential);
+      console.log("this is user_sign_in");
+      user_sign_in
+        .then((user) => {
+          onAuthStateChanged(user);
+          console.log("this is user", user);
         })
-        .catch((error: FirebaseError) => {
-          // Handle login error
-          console.log("Login Error", error.message);
-        });
+        .catch((error) => console.log("this is user error", error));
+    } catch (error) {
+      console.log("this is onGoogleButtonPress", error);
     }
   };
 
-  const handleLoginWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    // console.log('this is signInWithRedirect', signInWithRedirect( auth, provider))
-    debugger
-    // signInWithRedirect(auth, provider); 
-    signInWithPopup(auth, provider);
-    debugger   
-    getRedirectResult(auth)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
-      const credential = GoogleAuthProvider.credentialFromResult(result as UserCredential );
-      const token = credential?.accessToken;
-  
-      // The signed-in user info.
-      const user = result?.user;
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    }).catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
-  };
+  if (initializing)
+    return (
+      <Center flex={1}>
+        <ActivityIndicator size="large" color="#3182CE" />;
+      </Center>
+    );
 
   return (
     <View justifyContent="center" alignItems="center" bg="white" height="100%">
@@ -99,44 +78,12 @@ const Login = () => {
         />
       </View>
       <View width="80%">
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            borderRadius: 5,
-            marginBottom: 10,
-            paddingLeft: 10,
-          }}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-        {emailError ? (
-          <Text style={{ color: "red", fontSize: 12 }}>{emailError}</Text>
-        ) : null}
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            borderRadius: 5,
-            marginBottom: 10,
-            paddingLeft: 10,
-          }}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        {passwordError ? (
-          <Text style={{ color: "red", fontSize: 12 }}>{passwordError}</Text>
-        ) : null}
-        <Button onPress={() => handleLogin()} style={{ marginBottom: 10 }}>
-          Login
-        </Button>
         <TouchableOpacity
-          onPress={() => handleLoginWithGoogle()}
+          onPress={() =>
+            onGoogleButtonPress().then(() =>
+              console.log("Google setup successful")
+            )
+          }
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -157,9 +104,16 @@ const Login = () => {
             Login with Google
           </Text>
         </TouchableOpacity>
+        {/* <GoogleSigninButton
+          style={{ width: 300, height: 65 }}
+          onPress={() =>
+            onGoogleButtonPress().then(() =>
+              console.log("Google Signin Successful")
+            )
+          }
+        /> */}
       </View>
     </View>
   );
 };
-
 export default Login;

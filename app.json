@@ -2,6 +2,7 @@
   "expo": {
     "name": "news-app",
     "slug": "news-app",
+    "plugins": ["@react-native-google-signin/google-signin"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "example.expo.googlesignin",
+      "bundleIdentifier": "com.newsapp.chimi",
       "config": {
         "googleSignIn": {
           "reservedClientId": "<YOUR_REVERSED_IOS_CLIENT_ID>"
@@ -29,11 +30,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "example.expo.googlesignin",
+      "package": "com.newsapp.chimi",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "70297aaf-289f-4e8b-bcb2-fa1b7e866003"
+      }
     }
   }
 }

@@ -35,7 +35,7 @@ const Article = (props: NewsData) => {
   const isDarkMode = useSelector(getIsDarkMode);
 
   useEffect(() => {
-    const fetchRating = async() => {
+    const fetchRating = async () => {
       const querySnapShot = await getDocs(
         query(
           collection(db, "articles"),
@@ -48,7 +48,7 @@ const Article = (props: NewsData) => {
       } else {
         setRating(0);
       }
-    }
+    };
     fetchRating();
   }, []);
 
@@ -102,12 +102,18 @@ const Article = (props: NewsData) => {
     <Box p={3}>
       <HStack justifyContent="space-between">
         <VStack width="65%">
-          <Heading fontSize="md" fontWeight="medium" numberOfLines={2} mb={2} color= {isDarkMode ? "gray.100" : "gray.700"}>
+          <Heading
+            fontSize="md"
+            fontWeight="medium"
+            numberOfLines={2}
+            mb={2}
+            color={isDarkMode ? "gray.100" : "gray.700"}
+          >
             {props.title}
           </Heading>
           <HStack mb={1}>
             <Ionicons name="person-outline" size={16} color="#4299E1" mr={2} />
-            <Text fontSize="xs" color= {isDarkMode ? "gray.100" : "gray.700"}>
+            <Text fontSize="xs" color={isDarkMode ? "gray.100" : "gray.700"}>
               {props.author}
             </Text>
           </HStack>
@@ -119,7 +125,7 @@ const Article = (props: NewsData) => {
               mr={2}
             />
             {props.source && (
-              <Text fontSize="xs" color= {isDarkMode ? "gray.100" : "gray.700"}>
+              <Text fontSize="xs" color={isDarkMode ? "gray.100" : "gray.700"}>
                 {props.source.name}
               </Text>
             )}
@@ -140,30 +146,35 @@ const Article = (props: NewsData) => {
               </Text>
             </HStack>
           </TouchableOpacity>
-          
+
           <HStack justifyContent="space-between" alignItems="center">
-          <StarRating
-            starSize={20}
-            color="#3182CE"
-            rating={rating}
-            onChange={handleSubmitRating}
-          />
-          <IconButton
-            variant="unstyled"
-            icon={<ShareIcon size="sm" color="#4299E1" />}
-            onPress={shareNews}
-          />
+            <StarRating
+              starSize={20}
+              color="#3182CE"
+              rating={rating}
+              onChange={handleSubmitRating}
+            />
+            <IconButton
+              variant="unstyled"
+              icon={<ShareIcon size="sm" color="#4299E1" />}
+              onPress={shareNews}
+            />
           </HStack>
-          
         </VStack>
-        <Image
-          width="30%"
-          borderRadius={10}
-          height={120}
-          resizeMode="cover"
-          source={{ uri: props.urlToImage }}
-          alt="article image"
-        />
+        {props.urlToImage ? (
+          <Image
+            width="30%"
+            borderRadius={10}
+            height={120}
+            resizeMode="cover"
+            source={{ uri: props.urlToImage }}
+            alt="article image"
+          />
+        ) : (
+          <Text textAlign="center">
+            No Image
+          </Text>
+        )}
       </HStack>
       <Divider mt={4} />
       <ModalWebview

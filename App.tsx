@@ -9,6 +9,7 @@ import Navigation from "./src/components/navigation/navigation";
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/state/store";
 import { PersistGate } from "redux-persist/integration/react";
+import "expo-dev-client"; 
 
 export default function App() {
   useFonts({

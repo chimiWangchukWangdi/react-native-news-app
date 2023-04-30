@@ -123,7 +123,7 @@ export default function HomeScreen() {
               author={item.author}
               description={item.description}
               publishedAt={item.publishedAt}
-              urlToImage={item.urlToImage}
+              urlToImage={item.urlToImage ? item.urlToImage : ""}
               source={item.source}
               url={item.url}
             />
