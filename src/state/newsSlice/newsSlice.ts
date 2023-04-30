@@ -34,7 +34,6 @@ export const newsSlice = createSlice({
       })
       .addCase(fetchAsyncNews.rejected, (state) => {
         state.loading = false;
-        console.log("fetchAsyncNews rejected");
       })
       .addCase(clearAllNews, (state) => {
         state.newsArray = [];

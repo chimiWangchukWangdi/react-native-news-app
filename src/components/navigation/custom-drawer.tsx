@@ -23,20 +23,15 @@ function CustomDrawer(props: DrawerContentComponentProps) {
   const dispatch = useAppDispatch();
 
   const handleLogOut = async () => {
-    console.log("this is handleLogOut - 1");
     const user = auth().currentUser;
     if (user) {
       try {
-        console.log("this is inside handleLogOut - 2");
         await GoogleSignin.revokeAccess();
-        console.log("this is inside handleLogOut - 3");
         await GoogleSignin.signOut();
         await auth()
           .signOut()
           .then(() => console.log("User signed out!"));
-        console.log("this is inside handleLogOut - 4");
         dispatch(setIsLoggedOut());
-        console.log("this is inside handleLogOut - 5");
       } catch {
         (error: any) => console.log("this is handleLogOut error", error);
       }

@@ -5,10 +5,7 @@ import { useAppDispatch } from "../state/store";
 import { setIsLoggedIn } from "../state/auth-state/authSlice";
 import auth from "@react-native-firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as Location from "expo-location";
 
 const Login = () => {
@@ -136,15 +133,9 @@ const Login = () => {
             Login with Google
           </Text>
         </TouchableOpacity>
-        {/* <GoogleSigninButton
-          style={{ width: 300, height: 65 }}
-          onPress={() =>
-            onGoogleButtonPress().then(() =>
-              console.log("Google Signin Successful")
-            )
-          }
-        /> */}
-        <Text color="primary.500" fontSize="14">{text}</Text>
+        <Text color="primary.500" fontSize="14">
+          {text}
+        </Text>
       </View>
     </View>
   );

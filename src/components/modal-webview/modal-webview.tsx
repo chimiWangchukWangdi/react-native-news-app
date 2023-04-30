@@ -14,7 +14,6 @@ const ModalWebview = ({ visible, url, handleBack }: modalProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const handleLoadStart = () => {
     setIsLoading(true);
-    {console.log('url', url)}
   };
 
   const handleLoadEnd = () => {
