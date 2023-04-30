@@ -15,16 +15,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import ModalWebview from "./modal-webview/modal-webview";
 import { NewsData } from "../models/news.model";
 import StarRating from "react-native-star-rating-widget";
-import { db } from "../../firebaseConfig";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
 import { Share } from "react-native";
 import { useSelector } from "react-redux";
 import { getIsDarkMode } from "../state/newsSlice/newsSlice";
@@ -36,19 +27,25 @@ const Article = (props: NewsData) => {
 
   useEffect(() => {
     const fetchRating = async () => {
-      const querySnapShot = await getDocs(
-        query(
-          collection(db, "articles"),
-          where("articleTitle", "==", props.title)
-        )
-      );
-      if (!querySnapShot.empty) {
-        const docSnapshot = querySnapShot.docs[0];
-        setRating(docSnapshot.data().rating);
-      } else {
-        setRating(0);
+      const querySnapshot = firestore()
+          .collection('articles')
+          if(!!querySnapshot){
+      try {
+        const querySnapshot = await firestore()
+          .collection('articles')
+          .where('articleTitle', '==', props.title)
+          .get();
+        if (!querySnapshot.empty) {
+          const docSnapshot = querySnapshot.docs[0];
+          setRating(docSnapshot.data().rating);
+        } else {
+          setRating(0);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    };
+    }};
+    
     fetchRating();
   }, []);
 
@@ -63,32 +60,30 @@ const Article = (props: NewsData) => {
   const handleSubmitRating = async (startValue: number) => {
     setRating(startValue);
     const articleTitle = props.title;
-
+  
     try {
-      const querySnapShot = await getDocs(
-        query(
-          collection(db, "articles"),
-          where("articleTitle", "==", articleTitle)
-        )
-      );
-
-      if (querySnapShot.docs.length > 0) {
+      const querySnapshot = await firestore()
+        .collection('articles')
+        .where('articleTitle', '==', articleTitle)
+        .get();
+  
+      if (!querySnapshot.empty) {
         // Update existing rating document
-        const ratingRef = doc(db, "articles", querySnapShot.docs[0].id);
-        await updateDoc(ratingRef, { rating: startValue });
-        console.log("Rating updated for article ", articleTitle);
+        const ratingRef = querySnapshot.docs[0].ref;
+        await ratingRef.update({ rating: startValue });
+        console.log('Rating updated for article', articleTitle);
       } else {
         // Create new rating document
-        const ratingRef = await addDoc(collection(db, "articles"), {
-          articleTitle: articleTitle,
-          rating: startValue,
-        });
-        console.log("New rating added for article ", articleTitle);
+        const ratingRef = await firestore()
+          .collection('articles')
+          .add({ articleTitle, rating: startValue });
+        console.log('New rating added for article', articleTitle);
       }
     } catch (error) {
-      console.log("Error adding/updating rating: ", error);
+      console.log('Error adding/updating rating:', error);
     }
   };
+  
 
   const shareNews = async() => {
     try {

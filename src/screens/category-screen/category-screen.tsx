@@ -98,6 +98,9 @@ export default function CategoryScreen() {
         <ActivityIndicator size="large" color="#3182CE" />
       ) : selectedCategory === "local" && localNewsData ? (
         <FlatList
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }
           data={localNewsData}
           renderItem={({ item }: { item: localNewsData }) => (
             <LocalArticles
