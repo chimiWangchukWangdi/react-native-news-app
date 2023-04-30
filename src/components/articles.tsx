@@ -90,12 +90,34 @@ const Article = (props: NewsData) => {
     }
   };
 
-  const shareNews = () => {
-    Share.share({
-      title: props.title,
-      message: props.title,
-      url: props.url,
-    });
+  const shareNews = async() => {
+    try {
+      const url = props.url;
+      const title = props.title;
+      const author = props.author;
+      const source = props.source?.name || 'Unknown source';
+  
+      // Construct the message to be shared
+      let message = `${title}\n\n`;
+  
+      if (author) {
+        message += `Author: ${author}\n`;
+      }
+  
+      message += `Source: ${source}\n\nRead More: ${url}`;
+  
+      // Construct the deep link for Google search
+      const query = `${title} ${author} ${source}`.replace(/ /g, '+');
+      const deepLink = `https://www.google.com/search?q=${query}&tbas=0&tbs=sbd:1`;
+  
+      // Share the message and deep link using the Share API
+      await Share.share({
+        message,
+        url: deepLink,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
