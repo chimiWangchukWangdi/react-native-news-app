@@ -9,14 +9,46 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from "@react-native-google-signin/google-signin";
+import * as Location from "expo-location";
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const [location, setLocation] = useState<Location.LocationObject>();
+  const [errorMsg, setErrorMsg] = useState<string>();
+  const [city, setCity] = useState<string>("");
 
   useEffect(() => {
+    const getLocationAndCity = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+
+      // Reverse geocode to get city name
+      let address = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      let city = address[0].city;
+      setCity(city as string);
+    };
+
+    getLocationAndCity();
+
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
+
+  let text = "Waiting..";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = `location: ${city}, Bhutan`;
+  }
 
   GoogleSignin.configure({
     webClientId:
@@ -77,7 +109,7 @@ const Login = () => {
           size="2xl"
         />
       </View>
-      <View width="80%">
+      <View width="100%" alignItems="center">
         <TouchableOpacity
           onPress={() =>
             onGoogleButtonPress().then(() =>
@@ -100,7 +132,7 @@ const Login = () => {
             color="white"
             style={{ marginRight: 10 }}
           />
-          <Text style={{ color: "white", fontSize: 16 }}>
+          <Text color="white" fontSize="16">
             Login with Google
           </Text>
         </TouchableOpacity>
@@ -112,6 +144,7 @@ const Login = () => {
             )
           }
         /> */}
+        <Text color="primary.500" fontSize="14">{text}</Text>
       </View>
     </View>
   );

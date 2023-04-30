@@ -25,7 +25,12 @@ export default {
         reservedClientId: "<YOUR_REVERSED_IOS_CLIENT_ID>",
       },
     },
-    plugins: ["@react-native-google-signin/google-signin"],
+    plugins: ["@react-native-google-signin/google-signin",  [
+      'expo-location',
+      {
+        isAndroidBackgroundLocationEnabled: ''
+      }
+    ]],
     googleServicesFile: "./GoogleService-Info.plist",
   },
 };

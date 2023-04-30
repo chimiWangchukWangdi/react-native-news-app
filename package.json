@@ -25,6 +25,7 @@
     "dotenv": "^16.0.3",
     "expo": "~48.0.9",
     "expo-device": "~5.2.1",
+    "expo-location": "~15.1.1",
     "expo-notifications": "^0.18.1",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
