@@ -12,12 +12,15 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
+import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
+import NetInfo from '@react-native-community/netinfo';
+
+const ignoredActions = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  stateReconciler: autoMergeLevel2,
+  stateReconciler: autoMergeLevel1,
 };
 
 export const store = configureStore({
@@ -28,7 +31,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions,
       },
     }),
 });
@@ -38,6 +41,14 @@ export const store = configureStore({
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+NetInfo.addEventListener((state) =>  {
+  if(!state.isConnected) {
+    //persist the store when offline
+    persistor.persist;
+    console.log('this is offline', persistor)
+  }
+})
 
 // Persist the store
 export const persistor = persistStore(store);
