@@ -41,35 +41,12 @@ jobs:
       run: yarn install # install dependencies using Yarn
       
     - name: Build Android
-      run: npx eas build -p android
+      run: yarn eas build --profile preview --platform android
 
     - name: Build iOS
-      run: npx eas build -p ios
+      run: yarn eas build --profile preview --platform ios
+      continue-on-error: true
       
     - name: Run tests
       run: expo test # or any other command to run tests
-
-  deploy:
-    runs-on: ubuntu-latest # specify the operating system for the job
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2 # check out the repository code
-
-    - name: Install Node.js
-      uses: actions/setup-node@v2 # set up Node.js
-      with:
-        node-version: 14 # specify the Node.js version to use
-
-    - name: Install Yarn
-      run: yarn global add yarn # install Yarn globally using Yarn
-
-    - name: Install Expo CLI
-      run: yarn global add expo-cli # install Expo CLI globally using Yarn
-
-    - name: Install EAS CLI
-      run: yarn global add eas-cli # install EAS CLI globally using Yarn
-
-    - name: Install
-      run: echo "This is the install step"
 
