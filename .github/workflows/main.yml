@@ -32,6 +32,9 @@ jobs:
       continue-on-error: true
 
     - name: Install EAS CLI
+      run: yarn add eas-cli
+      
+    - name: Install EAS-BUILD_JOB
       run: yarn add @expo/eas-build-job # install EAS CLI using Yarn
       
     - name: Check EAS CLI
