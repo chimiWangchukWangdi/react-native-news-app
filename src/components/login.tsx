@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Text, Center } from "native-base";
+import { View, Image, Center, Text } from "native-base";
 import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { useAppDispatch } from "../state/store";
 import { setIsLoggedIn } from "../state/auth-state/authSlice";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as Location from "expo-location";
@@ -56,7 +56,8 @@ const Login = () => {
   const [initializing, setInitializing] = useState(false);
 
   // Handle user state changes
-  function onAuthStateChanged(user: any) {
+
+  function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (user) {
       dispatch(setIsLoggedIn());
       if (initializing) setInitializing(false);
@@ -76,14 +77,11 @@ const Login = () => {
       // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       // Sign-in the user with the credential
-      const user_sign_in = auth().signInWithCredential(googleCredential);
-      console.log("this is user_sign_in");
-      user_sign_in
-        .then((user) => {
-          onAuthStateChanged(user);
-          console.log("this is user", user);
-        })
-        .catch((error) => console.log("this is user error", error));
+      const userCredential = await auth().signInWithCredential(
+        googleCredential
+      );
+      const user = userCredential.user;
+      onAuthStateChanged(user);
     } catch (error) {
       console.log("this is onGoogleButtonPress", error);
     }
@@ -133,9 +131,9 @@ const Login = () => {
             Login with Google
           </Text>
         </TouchableOpacity>
-        <Text color="primary.500" fontSize="14">
-          {text}
-        </Text>
+          <Text color="primary.500" fontSize="14" lineHeight="3xl">
+            {text}
+          </Text>
       </View>
     </View>
   );

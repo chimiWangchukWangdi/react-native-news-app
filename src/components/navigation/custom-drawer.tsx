@@ -33,7 +33,7 @@ function CustomDrawer(props: DrawerContentComponentProps) {
           .then(() => console.log("User signed out!"));
         dispatch(setIsLoggedOut());
       } catch {
-        (error: any) => console.log("this is handleLogOut error", error);
+        (error: Error) => console.log("this is handleLogOut error", error);
       }
     }
   };
