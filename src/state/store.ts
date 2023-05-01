@@ -2,26 +2,42 @@ import { AnyAction, Reducer, configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./reducer";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { persistReducer, persistStore } from "redux-persist";
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
-
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
-}
+};
 
 export const store = configureStore({
-  reducer: persistReducer(persistConfig, rootReducer as Reducer<unknown, AnyAction>),
+  reducer: persistReducer(
+    persistConfig,
+    rootReducer as Reducer<unknown, AnyAction>
+  ),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
-
 
 //const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export type AppDispatch = typeof store.dispatch;
 
-export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 // Persist the store
 export const persistor = persistStore(store);
