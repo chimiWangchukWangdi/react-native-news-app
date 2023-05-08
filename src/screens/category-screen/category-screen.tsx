@@ -53,6 +53,10 @@ export default function CategoryScreen() {
     }
   };
 
+  useEffect(() => {
+    handleSelect("local")
+  }, [])
+
   return (
     <View>
       <Center>

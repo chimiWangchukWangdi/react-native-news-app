@@ -25,7 +25,7 @@ function LocalArticles(props: localNewsData) {
   const [rating, setRating] = useState<number>(0);
   const isDarkMode = useSelector(getIsDarkMode);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchRating = async () => {
       const querySnapshot = firestore()
           .collection('articles')
@@ -47,7 +47,7 @@ function LocalArticles(props: localNewsData) {
     }};
     
     fetchRating();
-  }, []);
+  }, []); */
 
   const handleReadMore = () => {
     setShowWebView(true);
@@ -156,12 +156,12 @@ function LocalArticles(props: localNewsData) {
             </HStack>
           </TouchableOpacity>
           <HStack justifyContent="space-between" alignItems="center">
-          <StarRating
+          {/* <StarRating
             starSize={20}
             color="#3182CE"
             rating={rating}
             onChange={handleSubmitRating}
-          />
+          /> */}
           <IconButton
             variant="unstyled"
             icon={<ShareIcon size="sm" color="#4299E1" />}

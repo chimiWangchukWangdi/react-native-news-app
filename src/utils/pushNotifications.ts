@@ -1,5 +1,6 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -11,6 +12,7 @@ Notifications.setNotificationHandler({
 
 // Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
 export async function sendPushNotification(expoPushToken: string | undefined) {
+  console.log('this is sendPushNotification() - 1')
   // const article = await getLatestNewsArticle();
   const article = {
     description: "this is description",
@@ -23,6 +25,8 @@ export async function sendPushNotification(expoPushToken: string | undefined) {
     body: article.description,
     data: { url: article.link },
   };
+
+  console.log('this is sendPushNotification() - 2')
 
   await fetch("https://exp.host/--/api/v2/push/send", {
     method: "POST",
@@ -38,30 +42,37 @@ export async function sendPushNotification(expoPushToken: string | undefined) {
 export async function registerForPushNotificationsAsync() {
   let token;
   if (Device.isDevice) {
+    console.log('registerForPushNotificationsAsync() - Device.isDevice');
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
     if (existingStatus !== "granted") {
+    console.log('registerForPushNotificationsAsync() - existingStatus !== "granted"');
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
+    console.log('registerForPushNotificationsAsync() - finalStatus !== "granted"');
       alert("Failed to get push token for push notification!");
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log('registerForPushNotificationsAsync() - token:', token);
   } else {
+    console.log('registerForPushNotificationsAsync() - else');
     alert("Must use physical device for Push Notifications");
+    
   }
 
-  // if (Platform.OS === "android") {
-  //   Notifications.setNotificationChannelAsync("default", {
-  //     name: "default",
-  //     importance: Notifications.AndroidImportance.MAX,
-  //     vibrationPattern: [0, 250, 250, 250],
-  //     lightColor: "#FF231F7C",
-  //     showBadge: false,
-  //   });
-  // }
+  if (Platform.OS === "android") {
+    console.log('registerForPushNotificationsAsync() - Platform.OS === "android"');
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+      showBadge: false,
+    });
+  }
   return token;
 }

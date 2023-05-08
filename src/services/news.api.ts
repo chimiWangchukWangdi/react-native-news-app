@@ -21,7 +21,7 @@ export const getNewsData = async (category?: string) => {
   else{
     try {
       const country = "us";
-      let apiUrl = `${baseApiUrl}top-headlines?country=us&apiKey=${apiKeyNewsApi}`;
+      let apiUrl = `${baseApiUrl}top-headlines?country=us&pageSize=10&apiKey=${apiKeyNewsApi}`;
       if (category) {
         apiUrl += `&category=${category}`;
       }

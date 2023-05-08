@@ -44,7 +44,7 @@ const RssFeedReader = () => {
           marginBottom="10px"
           marginTop="10px"
         >
-          Rss Feed {feed?.title && `: ${feed.title}`} 
+          Rss Feed {feed?.title && `: ${feed.title}`}
         </Heading>
       </Center>
       <InputBar
@@ -74,11 +74,16 @@ const RssFeedReader = () => {
                   fontWeight="medium"
                   numberOfLines={2}
                   mb={2}
-                  color= {isDarkMode ? "gray.100" : "gray.700"}
+                  color={isDarkMode ? "gray.100" : "gray.700"}
                 >
                   {item.title}
                 </Text>
-                <Text fontSize="sm" color= {isDarkMode ? "gray.100" : "gray.700"} numberOfLines={3} mb={2}>
+                <Text
+                  fontSize="sm"
+                  color={isDarkMode ? "gray.100" : "gray.700"}
+                  numberOfLines={3}
+                  mb={2}
+                >
                   {item.description}
                 </Text>
               </TouchableOpacity>

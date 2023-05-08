@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, RefreshControl } from "react-native";
+import { ActivityIndicator, Button, RefreshControl } from "react-native";
 import { Center, FlatList, Heading, View } from "native-base";
 import Article from "../../components/articles";
 import { useAppDispatch } from "../../state/store";
@@ -102,13 +102,13 @@ export default function HomeScreen() {
           handleBack={handleBack}
         />
       )}
-      {/* to trigger the push notificatoin for demo purpose */}
-      {/* <Button
+      {/* to trigger the push notification for demo purpose */}
+      <Button
         title="Press to Send Notification"
         onPress={async () => {
           await sendPushNotification(expoPushToken);
         }}
-      /> */}
+      />
       {isLoading ? (
         <ActivityIndicator size="large" color="#3182CE" />
       ) : (

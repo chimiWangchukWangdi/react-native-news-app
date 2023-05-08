@@ -25,7 +25,7 @@ const Article = (props: NewsData) => {
   const [rating, setRating] = useState<number>(0);
   const isDarkMode = useSelector(getIsDarkMode);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchRating = async () => {
       const querySnapshot = firestore()
           .collection('articles')
@@ -47,7 +47,7 @@ const Article = (props: NewsData) => {
     }};
     
     fetchRating();
-  }, []);
+  }, []); */
 
   const handleReadMore = () => {
     setShowWebView(true);
@@ -165,12 +165,12 @@ const Article = (props: NewsData) => {
           </TouchableOpacity>
 
           <HStack justifyContent="space-between" alignItems="center">
-            <StarRating
+            {/* <StarRating
               starSize={20}
               color="#3182CE"
               rating={rating}
               onChange={handleSubmitRating}
-            />
+            /> */}
             <IconButton
               variant="unstyled"
               icon={<ShareIcon size="sm" color="#4299E1" />}
