@@ -1,9 +1,9 @@
 name: CI/CD Workflow
 
 on:
-  push:
-    branches:
-      - main # specify the branch you want to trigger the workflow on
+  # push:
+  #   branches:
+  #     - main # specify the branch you want to trigger the workflow on
 
 jobs:
   build_and_test:
