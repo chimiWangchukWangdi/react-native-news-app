@@ -20,8 +20,7 @@ import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
-  // const data: never[] | NewsData[] = useSelector(getAllNews);
-  const [newsData, setNewsData] = useState<never[] | NewsData[]>([]);
+  const data: never[] | NewsData[] = useSelector(getAllNews);
 
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
   const [notification, setNotification] = useState<
@@ -37,11 +36,8 @@ export default function HomeScreen() {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    setNewsData([]);
     dispatch(clearAllNews());
-    dispatch(fetchAsyncNews("")).then((data) => {
-      setNewsData(data.payload);
-    });
+    dispatch(fetchAsyncNews(""))
     setRefreshing(false);
   };
 
@@ -50,9 +46,7 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    dispatch(fetchAsyncNews("")).then((data) => {
-      setNewsData(data.payload);
-    });
+    dispatch(fetchAsyncNews(""))
 
     registerForPushNotificationsAsync().then((token: string | undefined) => {
       setExpoPushToken(token);
@@ -116,7 +110,7 @@ export default function HomeScreen() {
           refreshControl={
             <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
           }
-          data={newsData}
+          data={data}
           renderItem={({ item }: { item: NewsData }) => (
             <Article
               title={item.title}

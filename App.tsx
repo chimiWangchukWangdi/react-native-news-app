@@ -7,7 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { customTheme } from "./src/styles/theme";
 import Navigation from "./src/components/navigation/navigation";
 import { Provider } from "react-redux";
-import { persistor, store } from "./src/state/store";
+import { store } from "./src/state/store";
 import { PersistGate } from "redux-persist/integration/react";
 import "expo-dev-client"; 
 
@@ -18,12 +18,12 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
           <NativeBaseProvider theme={customTheme}>
             <StatusBar translucent backgroundColor="transparent" />
             <Navigation />
           </NativeBaseProvider>
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
     </SafeAreaProvider>
   );

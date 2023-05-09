@@ -14,8 +14,6 @@ import {
   getAllNews,
   getLoadingState,
 } from "../../state/newsSlice/newsSlice";
-import LocalArticles from "../../components/local-articles";
-import { RootState } from "../../state/reducer";
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
@@ -23,7 +21,6 @@ export default function CategoryScreen() {
   const isLoading = useSelector(getLoadingState);
 
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
-  // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const [refreshing, setRefreshing] = useState(false);
@@ -41,10 +38,9 @@ export default function CategoryScreen() {
   const handleSelect = (value: string) => {
     try {
       setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
-  
-        dispatch(fetchAsyncNews(value));
-          setNewsData(data)
-   
+
+      dispatch(fetchAsyncNews(value));
+      setNewsData(data);
     } catch (error) {
       console.log("Error fetching news data:", error);
     }
