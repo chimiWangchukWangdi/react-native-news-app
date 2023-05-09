@@ -15,14 +15,14 @@ import {
   getLoadingState,
 } from "../../state/newsSlice/newsSlice";
 import LocalArticles from "../../components/local-articles";
+import { RootState } from "../../state/reducer";
 
 export default function CategoryScreen() {
   const dispatch = useAppDispatch();
-  // const data = useSelector(getAllNews);
+  const data = useSelector(getAllNews);
   const isLoading = useSelector(getLoadingState);
 
   const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
-  const [localNewsData, setLocalNewsData] = useState<localNewsData[]>([]);
   // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
@@ -38,16 +38,13 @@ export default function CategoryScreen() {
     <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
   );
 
-  const handleSelect = async (value: string) => {
+  const handleSelect = (value: string) => {
     try {
       setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
-      const { payload } = await dispatch(fetchAsyncNews(value));
-      if (value === "local") {
-        setLocalNewsData(payload);
-        setNewsData([]);
-      } else {
-        setNewsData(payload);
-      }
+  
+        dispatch(fetchAsyncNews(value));
+          setNewsData(data)
+   
     } catch (error) {
       console.log("Error fetching news data:", error);
     }
@@ -55,7 +52,7 @@ export default function CategoryScreen() {
 
   useEffect(() => {
     handleSelect("business");
-  }, [dispatch]);
+  }, []);
 
   return (
     <View>
@@ -100,23 +97,11 @@ export default function CategoryScreen() {
       </View>
       {isLoading ? (
         <ActivityIndicator size="large" color="#3182CE" />
-      ) : selectedCategory === "local" && localNewsData ? (
-        <FlatList
-          refreshControl={refreshedControl}
-          data={localNewsData}
-          renderItem={({ item }: { item: localNewsData }) => (
-            <LocalArticles
-              author={item.author}
-              link={item.link}
-              title={item.title}
-            />
-          )}
-        />
       ) : (
-        newsData && (
+        data && (
           <FlatList
             refreshControl={refreshedControl}
-            data={newsData}
+            data={data}
             renderItem={({ item }: { item: NewsData }) => (
               <Article
                 title={item.title}

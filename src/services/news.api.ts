@@ -8,17 +8,6 @@ const apiKeyNewsApi = Constants.manifest?.extra?.API_KEY_NEWSAPI;
 const apiKeyNewsData = Constants.manifest?.extra?.API_KEY_NEWSDATA;
 
 export const getNewsData = async (category?: string) => {
-  if(category === "local") {
-    try {
-      let apiUrl = "https://kuenselonline.com/wp-json/wp/v2/posts";
-      const response = await axios.get(apiUrl);
-      return response.data;
-    } catch (error) {
-      console.log("this is fetchAsyncNews-local", error);
-      return null;
-    }
-  }
-  else{
     try {
       const country = "us";
       let apiUrl = `${baseApiUrl}top-headlines?country=us&pageSize=10&apiKey=${apiKeyNewsApi}`;
@@ -31,7 +20,6 @@ export const getNewsData = async (category?: string) => {
       console.log("this is fetchAsyncNews", error);
       return null;
     }
-  }
 };
 
 export const searchArticles = async (

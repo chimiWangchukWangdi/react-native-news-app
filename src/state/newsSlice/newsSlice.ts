@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "../reducer";
 import { getNewsData } from "../../services/news.api";
+import { debug } from "react-native-reanimated";
 
 const initialState = {
   newsArray: [],
