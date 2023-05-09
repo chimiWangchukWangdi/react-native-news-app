@@ -40,14 +40,13 @@ export default function CategoryScreen() {
 
   const handleSelect = async (value: string) => {
     try {
+      setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
       const { payload } = await dispatch(fetchAsyncNews(value));
       if (value === "local") {
         setLocalNewsData(payload);
-        setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
         setNewsData([]);
       } else {
         setNewsData(payload);
-        setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
       }
     } catch (error) {
       console.log("Error fetching news data:", error);
