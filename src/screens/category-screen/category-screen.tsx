@@ -21,14 +21,12 @@ export default function CategoryScreen() {
   // const data = useSelector(getAllNews);
   const isLoading = useSelector(getLoadingState);
 
-  const [newsData, setNewsData] = useState<
-    NewsData[] | never[]
-  >([]);
+  const [newsData, setNewsData] = useState<NewsData[] | never[]>([]);
   const [localNewsData, setLocalNewsData] = useState<localNewsData[]>([]);
   // const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-  const [refreshing, setRefreshing] = useState(false);  
+  const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -36,18 +34,20 @@ export default function CategoryScreen() {
     dispatch(fetchAsyncNews(selectedCategory));
     setRefreshing(false);
   };
-  const refreshedControl = <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+  const refreshedControl = (
+    <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+  );
 
   const handleSelect = async (value: string) => {
     try {
       const { payload } = await dispatch(fetchAsyncNews(value));
       if (value === "local") {
         setLocalNewsData(payload);
-        setSelectedCategory(prevValue => prevValue === value ? "" : value);
+        setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
         setNewsData([]);
       } else {
         setNewsData(payload);
-        setSelectedCategory(prevValue => prevValue === value ? "" : value);
+        setSelectedCategory((prevValue) => (prevValue === value ? "" : value));
       }
     } catch (error) {
       console.log("Error fetching news data:", error);
@@ -55,8 +55,8 @@ export default function CategoryScreen() {
   };
 
   useEffect(() => {
-    handleSelect("local")
-  }, [dispatch])
+    handleSelect("business");
+  }, [dispatch]);
 
   return (
     <View>
@@ -103,7 +103,7 @@ export default function CategoryScreen() {
         <ActivityIndicator size="large" color="#3182CE" />
       ) : selectedCategory === "local" && localNewsData ? (
         <FlatList
-        refreshControl={refreshedControl}
+          refreshControl={refreshedControl}
           data={localNewsData}
           renderItem={({ item }: { item: localNewsData }) => (
             <LocalArticles
