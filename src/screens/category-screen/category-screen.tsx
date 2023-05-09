@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, RefreshControl } from "react-native";
 import { Center, Heading, ScrollView, View, FlatList } from "native-base";
 import { Chip } from "react-native-paper";
@@ -36,6 +36,7 @@ export default function CategoryScreen() {
     dispatch(fetchAsyncNews(selectedCategory));
     setRefreshing(false);
   };
+  const refreshedControl = <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
 
   const handleSelect = async (value: string) => {
     try {
@@ -55,7 +56,7 @@ export default function CategoryScreen() {
 
   useEffect(() => {
     handleSelect("local")
-  }, [])
+  }, [dispatch])
 
   return (
     <View>
@@ -102,9 +103,7 @@ export default function CategoryScreen() {
         <ActivityIndicator size="large" color="#3182CE" />
       ) : selectedCategory === "local" && localNewsData ? (
         <FlatList
-        refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-        }
+        refreshControl={refreshedControl}
           data={localNewsData}
           renderItem={({ item }: { item: localNewsData }) => (
             <LocalArticles
@@ -117,9 +116,7 @@ export default function CategoryScreen() {
       ) : (
         newsData && (
           <FlatList
-            refreshControl={
-              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            }
+            refreshControl={refreshedControl}
             data={newsData}
             renderItem={({ item }: { item: NewsData }) => (
               <Article
