@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../../screens/home-screen/home-screen";
 import CategoryScreen from "../../screens/category-screen/category-screen";
@@ -12,7 +12,7 @@ import RssFeedReader from "../../screens/rss-feed-reader";
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const isDarkMode = useSelector(getIsDarkMode);
 
   return (
